@@ -4,7 +4,6 @@ spring:
       mode: always
       platform: h2
       username: sa
-      schema-locations: classpath*:db/schema.sql
       data-locations: classpath*:db/data.sql
 
 
