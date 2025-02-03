@@ -7,7 +7,7 @@ import lombok.Setter;
 public class ApiUtils {
 
     public static <T> ApiSuccess<T> success(T response) {
-        return new ApiSuccess<>(response);
+        return new ApiSuccess<>(200,response);
     }
 
     public static ApiFail fail(int errorCode, String message) {
@@ -18,6 +18,7 @@ public class ApiUtils {
     @Setter
     @AllArgsConstructor
     public static class ApiSuccess<T> {
+        private final int code;
         private final T data;
     }
 
