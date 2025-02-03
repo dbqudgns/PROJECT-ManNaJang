@@ -53,7 +53,7 @@ public class Post {
     private String contactMethod;
 
     @Column(nullable = false)
-    private String fee;
+    private Integer fee;
 
     @Column(nullable = false)
     private LocalDateTime startDate ;
