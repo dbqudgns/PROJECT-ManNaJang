@@ -45,7 +45,7 @@ public class PostService {
 
         //포스트 정보가 없을 경우
         if (posts.isEmpty()) {
-            return new PageResponse<>(new CursorResponse<>(false,0, null, null), List.of());
+            return new PageResponse<>(new CursorResponse<>(false,0, null, null), null);
         }
 
         int size = posts.size();
@@ -56,12 +56,23 @@ public class PostService {
             hasNext = true;
         }
 
-        List<PostResponse.FindAllDTO> findAllDTOS = posts.stream().map(PostResponse.FindAllDTO::new).toList();
+        PostResponse.FindAllDTO findAllDTO = PostResponse.FindAllDTO.of(posts);
         Post lastPost = posts.get(size - 1) ;
         T nextCursor = cursorExtractor.apply(lastPost);
         Long nextCursorId = lastPost.getId();
 
-        return new PageResponse<>(new CursorResponse<>(hasNext, size, nextCursor, nextCursorId), findAllDTOS);
+        return new PageResponse<>(new CursorResponse<>(hasNext, size, nextCursor, nextCursorId), findAllDTO);
 
+    }
+
+    public PageResponse<?, PostResponse.FindByIdDTO> findById(Long postId) {
+        Post post = getPostById(postId);
+        PostResponse.FindByIdDTO findByIdDTO = new PostResponse.FindByIdDTO(post);
+        return new PageResponse<>( null, findByIdDTO);
+    }
+
+
+    public Post getPostById(Long postId) {
+        return postJPARepository.findById(postId).orElseThrow(IllegalArgumentException::new);
     }
 }
