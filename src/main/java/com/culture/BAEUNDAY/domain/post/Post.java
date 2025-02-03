@@ -90,7 +90,7 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime deadline;
 
-    @Column(nullable = false)
+    @Column()
     private Long numsOfHeart;
     public void update(){
 
