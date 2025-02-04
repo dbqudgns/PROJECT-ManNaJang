@@ -6,6 +6,9 @@ spring:
     username: root
     password: dbqudgns24
 
+  jwt:
+    secret: fnxmdlavorxmzjarhdtkdldpvldjskswjswjdxhddlfemdrkwmdkaaaaaaaaaaaaa
+
   jpa:
     properties:
       hibernate:
@@ -45,9 +48,8 @@ spring:
 #    generate-ddl: true
 #    show-sql: true
 
-spring.jwt:
-  secret: ${JWT_SECRET_KEY}
 
 logging:
   level:
     org.hibernate.orm.jdbc.bind: trace
+
