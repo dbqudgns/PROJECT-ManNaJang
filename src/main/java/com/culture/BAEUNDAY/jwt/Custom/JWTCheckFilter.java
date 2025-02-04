@@ -1,7 +1,7 @@
 package com.culture.BAEUNDAY.jwt.Custom;
 
-import com.culture.BAEUNDAY.domain.User;
-import com.culture.BAEUNDAY.domain.enums.Role;
+import com.culture.BAEUNDAY.domain.user.User;
+import com.culture.BAEUNDAY.domain.user.Role;
 import com.culture.BAEUNDAY.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -54,7 +54,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             // JSON 응답 데이터 생성
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("status", 401);
-            responseData.put("message", "자동 로그아웃 되었습니다. 다시 로그인하세요.");
+            responseData.put("message", "Access 토큰 만료");
             responseData.put("errorCode", "AUTH_401");
 
             // JSON 변환 및 응답 출력

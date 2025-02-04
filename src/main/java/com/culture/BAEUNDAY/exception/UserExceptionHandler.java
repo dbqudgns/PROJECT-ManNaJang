@@ -1,7 +1,7 @@
 package com.culture.BAEUNDAY.exception;
 
-import com.culture.BAEUNDAY.controller.UserController;
-import com.culture.BAEUNDAY.dto.response.ErrorResult;
+import com.culture.BAEUNDAY.domain.user.controller.UserController;
+import com.culture.BAEUNDAY.domain.user.DTO.response.ErrorResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

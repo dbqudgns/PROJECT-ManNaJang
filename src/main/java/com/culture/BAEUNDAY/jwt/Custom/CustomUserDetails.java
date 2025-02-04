@@ -1,6 +1,6 @@
 package com.culture.BAEUNDAY.jwt.Custom;
 
-import com.culture.BAEUNDAY.domain.User;
+import com.culture.BAEUNDAY.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
