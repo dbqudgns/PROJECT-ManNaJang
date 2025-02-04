@@ -40,9 +40,9 @@ public class PostRequest {
             @NotBlank
             String address,
             @NotBlank
-            Integer minimumPeople,
+            Integer minP,
             @NotBlank
-            Integer maximumPeople,
+            Integer maxP,
             @NotBlank
             String content,
             @NotBlank
@@ -50,7 +50,8 @@ public class PostRequest {
             @NotBlank
             LocalDateTime createdDate,
             @NotBlank
-            LocalDateTime deadLine
+            LocalDateTime deadline,
+            Long numsOfHeart
 
     ){}
 
