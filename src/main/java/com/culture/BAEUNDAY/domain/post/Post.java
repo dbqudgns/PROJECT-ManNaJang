@@ -1,10 +1,7 @@
 package com.culture.BAEUNDAY.domain.post;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -53,7 +50,7 @@ public class Post {
     private String contactMethod;
 
     @Column(nullable = false)
-    private String fee;
+    private Integer fee;
 
     @Column(nullable = false)
     private LocalDateTime startDate ;
@@ -90,13 +87,39 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime deadline;
 
-    @Column(nullable = false)
+    @Column()
     private Long numsOfHeart;
-    public void update(){
 
+    public void update(String title, String imgURL, String subject, String goal, String outline,
+                       String targetStudent, String level, String contactMethod, Integer fee,
+                       LocalDateTime startDate, LocalDateTime endDate, Province province, String city,
+                       String address, int minP, int maxP, String content, Status status,
+                       LocalDateTime createdDate, LocalDateTime deadline, Long numsOfHeart) {
+
+        this.title = title;
+        this.imgURL = imgURL;
+        this.subject = subject;
+        this.goal = goal;
+        this.outline = outline;
+        this.targetStudent = targetStudent;
+        this.level = level;
+        this.contactMethod = contactMethod;
+        this.fee = fee;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.province = province;
+        this.city = city;
+        this.address = address;
+        this.minP = minP;
+        this.maxP = maxP;
+        this.content = content;
+        this.status = status;
+        this.createdDate = createdDate;
+        this.deadline = deadline;
+        this.numsOfHeart = numsOfHeart;
     }
 
-    public void delete(){
 
-    }
+
+
 }
