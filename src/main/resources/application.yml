@@ -48,6 +48,8 @@ spring:
 #    generate-ddl: true
 #    show-sql: true
 
+
 logging:
   level:
     org.hibernate.orm.jdbc.bind: trace
+
