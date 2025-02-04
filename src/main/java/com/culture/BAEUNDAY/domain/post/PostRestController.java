@@ -54,7 +54,7 @@ public class PostRestController {
             @RequestBody PostRequest.PostRequestDto request
     ){
         postService.update(postId, request);
-        return ResponseEntity.ok().body(ApiUtils.success("프로그램 삭제 완료"));
+        return ResponseEntity.ok().body(ApiUtils.success("프로그램 수정 완료"));
     }
     @DeleteMapping("/{postId}")
     public ResponseEntity<?> delete(
