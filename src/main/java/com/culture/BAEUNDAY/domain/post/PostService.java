@@ -63,15 +63,45 @@ public class PostService {
                 .province(request.province())
                 .city(request.city())
                 .address(request.address())
-                .minP(request.minimumPeople())
-                .maxP(request.maximumPeople())
+                .minP(request.minP())
+                .maxP(request.maxP())
                 .content(request.content())
                 .status(request.status())
                 .createdDate(request.createdDate())
-                .deadline(request.deadLine())
+                .deadline(request.deadline())
                 .user_id(user_id) // TODO : User 매핑
                 .build();
         postJPARepository.save(post);
+    }
+
+    public void update(Long postId, PostRequest.PostRequestDto request){
+        Post post = getPostById(postId);
+        //TODO : User
+        post.update(
+                request.title(),
+                request.imgURL(),
+                request.subject(),
+                request.goal(),
+                request.outline(),
+                request.targetStudent(),
+                request.level(),
+                request.contactMethod(),
+                request.fee(),
+                request.startDate(),
+                request.endDate(),
+                request.province(),
+                request.city(),
+                request.address(),
+                request.minP(),
+                request.maxP(),
+                request.content(),
+                request.status(),
+                request.createdDate(),
+                request.deadline(),
+                request.numsOfHeart()
+        );
+
+
     }
 
     public void delete(Long postId) {

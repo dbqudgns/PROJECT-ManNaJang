@@ -46,7 +46,17 @@ public class PostRestController {
         return ResponseEntity.ok().body(ApiUtils.success("프로그램 생성 완료"));
     }
 
-    @DeleteMapping("{postId}")
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<?> update(
+//            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable(name = "postId") Long postId,
+            @RequestBody PostRequest.PostRequestDto request
+    ){
+        postService.update(postId, request);
+        return ResponseEntity.ok().body(ApiUtils.success("프로그램 삭제 완료"));
+    }
+    @DeleteMapping("/{postId}")
     public ResponseEntity<?> delete(
 //            @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable(name = "postId") Long postId
