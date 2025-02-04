@@ -74,6 +74,7 @@ public class PostService {
         postJPARepository.save(post);
     }
 
+    @Transactional
     public void update(Long postId, PostRequest.PostRequestDto request){
         Post post = getPostById(postId);
         //TODO : User
@@ -104,6 +105,7 @@ public class PostService {
 
     }
 
+    @Transactional
     public void delete(Long postId) {
         Post post = getPostById(postId);
         postJPARepository.delete(post); //TODO: user ?
