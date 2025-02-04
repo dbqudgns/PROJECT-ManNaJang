@@ -6,7 +6,7 @@ public class CookieUtil {
 
     public static Cookie createCookie(String key, String value, Integer expiredS) {
         Cookie cookie = new Cookie(key, value);
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);
         cookie.setPath("/");
         cookie.setMaxAge(expiredS);
 

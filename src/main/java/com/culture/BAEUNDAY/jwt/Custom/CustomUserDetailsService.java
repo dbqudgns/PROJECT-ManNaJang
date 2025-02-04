@@ -1,7 +1,7 @@
 package com.culture.BAEUNDAY.jwt.Custom;
 
-import com.culture.BAEUNDAY.domain.User;
-import com.culture.BAEUNDAY.repository.UserRepository;
+import com.culture.BAEUNDAY.domain.user.User;
+import com.culture.BAEUNDAY.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
