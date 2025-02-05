@@ -1,6 +1,5 @@
-package com.culture.BAEUNDAY.domain.user.repository;
+package com.culture.BAEUNDAY.domain.user;
 
-import com.culture.BAEUNDAY.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

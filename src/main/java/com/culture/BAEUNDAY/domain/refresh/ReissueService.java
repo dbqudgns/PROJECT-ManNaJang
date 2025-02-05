@@ -1,8 +1,7 @@
-package com.culture.BAEUNDAY.domain.user.service;
+package com.culture.BAEUNDAY.domain.refresh;
 
 import com.culture.BAEUNDAY.jwt.CookieUtil;
 import com.culture.BAEUNDAY.jwt.JWTUtil;
-import com.culture.BAEUNDAY.domain.user.repository.RefreshRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

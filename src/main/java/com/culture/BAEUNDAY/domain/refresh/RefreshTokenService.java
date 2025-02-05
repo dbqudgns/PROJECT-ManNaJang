@@ -1,7 +1,5 @@
-package com.culture.BAEUNDAY.domain.user.service;
+package com.culture.BAEUNDAY.domain.refresh;
 
-import com.culture.BAEUNDAY.domain.user.Refresh;
-import com.culture.BAEUNDAY.domain.user.repository.RefreshRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

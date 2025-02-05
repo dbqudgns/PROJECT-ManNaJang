@@ -1,4 +1,4 @@
-package com.culture.BAEUNDAY.domain.user;
+package com.culture.BAEUNDAY.domain.refresh;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

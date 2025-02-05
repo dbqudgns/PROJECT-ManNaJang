@@ -1,4 +1,4 @@
-package com.culture.BAEUNDAY.domain.user.controller;
+package com.culture.BAEUNDAY.domain.user;
 
 import com.culture.BAEUNDAY.domain.user.DTO.request.CheckRequestDTO;
 import com.culture.BAEUNDAY.domain.user.DTO.request.LoginDTO;
@@ -7,9 +7,6 @@ import com.culture.BAEUNDAY.domain.user.DTO.request.UpdateProfileRequestDTO;
 import com.culture.BAEUNDAY.domain.user.DTO.response.CheckNameResponseDTO;
 import com.culture.BAEUNDAY.domain.user.DTO.response.CheckUsernameResponseDTO;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
-import com.culture.BAEUNDAY.domain.user.service.LoginService;
-import com.culture.BAEUNDAY.domain.user.service.LogoutService;
-import com.culture.BAEUNDAY.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;

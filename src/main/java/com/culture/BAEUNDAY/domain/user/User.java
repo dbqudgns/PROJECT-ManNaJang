@@ -41,9 +41,6 @@ public class User {
 
     private String profileImg;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Review> reviews = new ArrayList<>();
-
     @OneToMany(mappedBy = "user")
     private List<Heart> hearts = new ArrayList<>();
 
@@ -72,14 +69,4 @@ public class User {
 
     }
 
-    @Builder
-    public static record UpdateProfileResponseDTO(
-            String message,
-            String name,
-            String field
-    ) {
-
-
-
-    }
 }
