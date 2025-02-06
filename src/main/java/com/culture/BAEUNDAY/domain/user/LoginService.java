@@ -1,5 +1,6 @@
-package com.culture.BAEUNDAY.domain.user.service;
+package com.culture.BAEUNDAY.domain.user;
 
+import com.culture.BAEUNDAY.domain.refresh.RefreshTokenService;
 import com.culture.BAEUNDAY.domain.user.DTO.request.LoginDTO;
 import com.culture.BAEUNDAY.jwt.CookieUtil;
 import com.culture.BAEUNDAY.jwt.JWTUtil;

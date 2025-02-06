@@ -1,6 +1,5 @@
-package com.culture.BAEUNDAY.domain.user.repository;
+package com.culture.BAEUNDAY.domain.refresh;
 
-import com.culture.BAEUNDAY.domain.user.Refresh;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

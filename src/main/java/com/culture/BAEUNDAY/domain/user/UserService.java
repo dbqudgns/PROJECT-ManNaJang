@@ -1,15 +1,9 @@
-package com.culture.BAEUNDAY.domain.user.service;
+package com.culture.BAEUNDAY.domain.user;
 
-import com.culture.BAEUNDAY.domain.user.DTO.response.CheckNameResponseDTO;
-import com.culture.BAEUNDAY.domain.user.DTO.response.CheckProfileResponseDTO;
-import com.culture.BAEUNDAY.domain.user.DTO.response.CheckUsernameResponseDTO;
-import com.culture.BAEUNDAY.domain.user.DTO.response.RegisterResponseDTO;
-import com.culture.BAEUNDAY.domain.user.User;
-import com.culture.BAEUNDAY.domain.user.Role;
+import com.culture.BAEUNDAY.domain.user.DTO.response.*;
 import com.culture.BAEUNDAY.domain.user.DTO.request.RegisterRequestDTO;
 import com.culture.BAEUNDAY.domain.user.DTO.request.UpdateProfileRequestDTO;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
-import com.culture.BAEUNDAY.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -96,7 +90,7 @@ public class UserService {
     }
 
     @Transactional
-    public User.UpdateProfileResponseDTO updateProfile(CustomUserDetails customUserDetails, UpdateProfileRequestDTO updateProfileRequestDTO) {
+    public UpdateProfileResponseDTO updateProfile(CustomUserDetails customUserDetails, UpdateProfileRequestDTO updateProfileRequestDTO) {
 
         User user = userRepository.findByUsername(customUserDetails.getUsername());
 
@@ -106,7 +100,7 @@ public class UserService {
 
         user.profileUpdate(updateProfileRequestDTO.name(), updateProfileRequestDTO.field());
 
-        return User.UpdateProfileResponseDTO.builder()
+        return UpdateProfileResponseDTO.builder()
                 .message("프로필 수정 완료")
                 .name(user.getName())
                 .field(user.getField())

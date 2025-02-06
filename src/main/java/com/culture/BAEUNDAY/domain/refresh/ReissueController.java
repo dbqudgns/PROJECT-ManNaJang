@@ -1,6 +1,5 @@
-package com.culture.BAEUNDAY.domain.user.controller;
+package com.culture.BAEUNDAY.domain.refresh;
 
-import com.culture.BAEUNDAY.domain.user.service.ReissueService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
