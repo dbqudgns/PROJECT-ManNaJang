@@ -3,6 +3,7 @@ package com.culture.BAEUNDAY.domain.post.DTO;
 import com.culture.BAEUNDAY.domain.post.Province;
 import com.culture.BAEUNDAY.domain.post.Status;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +27,7 @@ public class PostRequest {
             String level,
             @NotBlank
             String contactMethod,
-            @NotBlank
+            @NotNull
             Integer fee,
 
             @NotBlank
@@ -39,9 +40,9 @@ public class PostRequest {
             String city,
             @NotBlank
             String address,
-            @NotBlank
+            @NotNull
             Integer minP,
-            @NotBlank
+            @NotNull
             Integer maxP,
             @NotBlank
             String content,
