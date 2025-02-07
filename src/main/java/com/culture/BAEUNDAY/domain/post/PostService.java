@@ -69,7 +69,7 @@ public class PostService {
                 .status(request.status())
                 .createdDate(request.createdDate())
                 .deadline(request.deadline())
-                .user_id(user_id) // TODO : User 매핑
+
                 .build();
         postJPARepository.save(post);
     }

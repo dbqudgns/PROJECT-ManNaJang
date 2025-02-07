@@ -5,6 +5,7 @@ import com.culture.BAEUNDAY.domain.review.DTO.request.updateReviewRequestDTO;
 import com.culture.BAEUNDAY.domain.review.DTO.response.ReviewResponseDTO;
 import com.culture.BAEUNDAY.domain.user.User;
 import com.culture.BAEUNDAY.domain.user.UserRepository;
+import com.culture.BAEUNDAY.domain.user.UserService;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -24,14 +25,11 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     public List<ReviewResponseDTO> getMyReviews(CustomUserDetails customUserDetails) {
 
-        User user = userRepository.findByUsername(customUserDetails.getUsername());
-
-        if (user == null) {
-            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
-        }
+        User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
         List<ReviewResponseDTO> reviewList = new ArrayList<>();
 
@@ -54,11 +52,7 @@ public class ReviewService {
 
     public List<ReviewResponseDTO> getOtherReviews(Long otherId, CustomUserDetails customUserDetails) {
 
-        User user = userRepository.findByUsername(customUserDetails.getUsername());
-
-        if (user == null) {
-            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
-        }
+        User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
         User findUser = userRepository.findById(otherId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 대상자를 찾을 수 없습니다."));
@@ -85,11 +79,7 @@ public class ReviewService {
     @Transactional
     public ReviewResponseDTO registerReview(Long otherId, ReviewRequestDTO reviewRequest, CustomUserDetails customUserDetails) {
 
-        User user = userRepository.findByUsername(customUserDetails.getUsername());
-
-        if (user == null) {
-            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
-        }
+        User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
         User reviewee = userRepository.findById(otherId)
                 .orElseThrow(() -> new EntityNotFoundException("별점 대상자를 찾을 수 없습니다."));
@@ -117,11 +107,7 @@ public class ReviewService {
     @Transactional
     public ReviewResponseDTO updateReview(Long reviewId, updateReviewRequestDTO updateReviewRequest, CustomUserDetails customUserDetails) throws AccessDeniedException {
 
-        User user = userRepository.findByUsername(customUserDetails.getUsername());
-
-        if (user == null) {
-            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
-        }
+        User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
         Review updateReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 리뷰를 찾을 수 없습니다."));
@@ -145,11 +131,7 @@ public class ReviewService {
     @Transactional
     public Map<String, Object> deleteReview(Long reviewId, CustomUserDetails customUserDetails) throws AccessDeniedException {
 
-        User user = userRepository.findByUsername(customUserDetails.getUsername());
-
-        if (user == null) {
-            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
-        }
+        User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
         Review deleteReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 리뷰를 찾을 수 없습니다."));
