@@ -1,7 +1,11 @@
 package com.culture.BAEUNDAY.domain.post;
 
+import com.culture.BAEUNDAY.domain.user.User;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -21,12 +25,9 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-
-    @Column(nullable = false)
-    private Long user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column
     private String imgURL;
@@ -51,6 +52,10 @@ public class Post {
 
     @Column(nullable = false)
     private Integer fee;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Fee feeRange;
 
     @Column(nullable = false)
     private LocalDateTime startDate ;
@@ -87,14 +92,14 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime deadline;
 
-    @Column()
-    private Long numsOfHeart;
+    @Column(nullable = false)
+    private Integer numsOfHeart;
 
     public void update(String title, String imgURL, String subject, String goal, String outline,
-                       String targetStudent, String level, String contactMethod, Integer fee,
+                       String targetStudent, String level, String contactMethod, Integer fee, Fee feeRange,
                        LocalDateTime startDate, LocalDateTime endDate, Province province, String city,
                        String address, int minP, int maxP, String content, Status status,
-                       LocalDateTime createdDate, LocalDateTime deadline, Long numsOfHeart) {
+                       LocalDateTime createdDate, LocalDateTime deadline) {
 
         this.title = title;
         this.imgURL = imgURL;
@@ -105,6 +110,7 @@ public class Post {
         this.level = level;
         this.contactMethod = contactMethod;
         this.fee = fee;
+        this.feeRange = feeRange;
         this.startDate = startDate;
         this.endDate = endDate;
         this.province = province;
@@ -116,10 +122,14 @@ public class Post {
         this.status = status;
         this.createdDate = createdDate;
         this.deadline = deadline;
-        this.numsOfHeart = numsOfHeart;
     }
 
-
+    public void addHeart(){
+        this.numsOfHeart += 1;
+    }
+    public void removeHeart(){
+        this.numsOfHeart -= 1;
+    }
 
 
 }
