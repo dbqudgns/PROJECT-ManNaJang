@@ -7,6 +7,7 @@ import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatModel;
 import com.openai.models.FineTuningJob;
 import com.openai.models.FineTuningJobCreateParams;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 @Slf4j
+@Tag(name = "GPT api", description = "기획안 생성 기능")
 public class GptService {
 
     String openAiKey = "";
