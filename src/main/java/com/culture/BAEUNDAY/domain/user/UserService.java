@@ -75,11 +75,7 @@ public class UserService {
 
     public CheckProfileResponseDTO checkProfile(CustomUserDetails customUserDetails) {
 
-        User user = userRepository.findByUsername(customUserDetails.getUsername());
-
-        if (user == null) {
-            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
-        }
+        User user = findUserByUsernameOrThrow(customUserDetails.getUsername());
 
         return CheckProfileResponseDTO.builder()
                 .name(user.getName())
@@ -92,11 +88,7 @@ public class UserService {
     @Transactional
     public UpdateProfileResponseDTO updateProfile(CustomUserDetails customUserDetails, UpdateProfileRequestDTO updateProfileRequestDTO) {
 
-        User user = userRepository.findByUsername(customUserDetails.getUsername());
-
-        if (user == null) {
-            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
-        }
+        User user = findUserByUsernameOrThrow(customUserDetails.getUsername());
 
         user.profileUpdate(updateProfileRequestDTO.name(), updateProfileRequestDTO.field());
 
@@ -110,11 +102,7 @@ public class UserService {
 
     public CheckProfileResponseDTO seeProfile(Long userId, CustomUserDetails customUserDetails) {
 
-        User user = userRepository.findByUsername(customUserDetails.getUsername());
-
-        if (user == null) {
-            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
-        }
+        User user = findUserByUsernameOrThrow(customUserDetails.getUsername());
 
         User seeUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
@@ -125,5 +113,15 @@ public class UserService {
                 .field(seeUser.getField())
                 .build();
 
+    }
+
+    public User findUserByUsernameOrThrow(String username) {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
+        }
+
+        return user;
     }
 }

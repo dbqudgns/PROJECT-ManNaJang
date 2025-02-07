@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "post_tb")
+@Table(name = "post")
 public class Post {
 
     @Id
@@ -41,26 +41,28 @@ public class Post {
     @Column(nullable = false)
     private String outline;
 
-    @Column(nullable = false)
+    @Column(name = "target_student", nullable = false)
     private String targetStudent;
 
     @Column(nullable = false)
     private String level;
 
-    @Column(nullable = false)
+    @Column(name = "contact_method", nullable = false)
     private String contactMethod;
 
     @Column(nullable = false)
     private Integer fee;
+
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Fee feeRange;
 
     @Column(nullable = false)
+    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate ;
 
-    @Column(nullable = false)
+    @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
     @Column(nullable = false)
@@ -86,14 +88,16 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = false)
-    private LocalDateTime createdDate ;
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
 
     @Column(nullable = false)
     private LocalDateTime deadline;
 
+
     @Column(nullable = false)
     private Integer numsOfHeart;
+
 
     public void update(String title, String imgURL, String subject, String goal, String outline,
                        String targetStudent, String level, String contactMethod, Integer fee, Fee feeRange,

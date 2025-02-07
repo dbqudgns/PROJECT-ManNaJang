@@ -52,7 +52,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/gpt/**", "/h2-console/**", "/posts/**").permitAll()
                 .requestMatchers("/", "/login", "/logout", "/user/login", "/user/logout", "/user/check-name", "/user/check-username", "/user/register", "/reissue").permitAll()
-                .requestMatchers("/user/profile/**", "/heart/**", "/review/**", "/reserve/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+
+                .requestMatchers("/user/profile/**", "/heart/**", "/review/**", "/posts/**", "/comments/**", "/reply/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+
                 .anyRequest().authenticated());
 
         http

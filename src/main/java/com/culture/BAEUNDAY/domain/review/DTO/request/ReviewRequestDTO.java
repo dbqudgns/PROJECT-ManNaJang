@@ -14,7 +14,7 @@ public record ReviewRequestDTO(
         @Range(min = 0, max = 5, message = "별점은 0개부터 5개까지 채울 수 있습니다.")
         Integer star,
 
-        //@NotNull(message = "작성한 시간을 보내주세요.")
+        @NotNull(message = "작성한 시간을 보내주세요.")
         LocalDateTime createdDate
 
 ) {
