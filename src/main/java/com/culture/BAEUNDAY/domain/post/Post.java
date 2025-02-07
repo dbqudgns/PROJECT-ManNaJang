@@ -1,5 +1,6 @@
 package com.culture.BAEUNDAY.domain.post;
 
+import com.culture.BAEUNDAY.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "post_tb")
+@Table(name = "post")
 public class Post {
 
     @Id
@@ -21,12 +22,9 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-
-    @Column(nullable = false)
-    private Long user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column
     private String imgURL;
@@ -40,22 +38,22 @@ public class Post {
     @Column(nullable = false)
     private String outline;
 
-    @Column(nullable = false)
+    @Column(name = "target_student", nullable = false)
     private String targetStudent;
 
     @Column(nullable = false)
     private String level;
 
-    @Column(nullable = false)
+    @Column(name = "contact_method", nullable = false)
     private String contactMethod;
 
     @Column(nullable = false)
     private Integer fee;
 
-    @Column(nullable = false)
+    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate ;
 
-    @Column(nullable = false)
+    @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
     @Column(nullable = false)
@@ -81,13 +79,13 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = false)
-    private LocalDateTime createdDate ;
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
 
     @Column(nullable = false)
     private LocalDateTime deadline;
 
-    @Column()
+    @Column(name = "nums_of_heart", nullable = false)
     private Long numsOfHeart;
 
     public void update(String title, String imgURL, String subject, String goal, String outline,

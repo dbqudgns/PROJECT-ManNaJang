@@ -37,13 +37,13 @@ public class UserController {
 
     @PostMapping("/check-name")
     @Operation(summary = "닉네임 중복 확인")
-    public ResponseEntity<CheckNameResponseDTO> checkName(@RequestBody @Valid CheckRequestDTO checkRequestDTO) {
+    public ResponseEntity<?> checkName(@RequestBody @Valid CheckRequestDTO checkRequestDTO) {
         return ResponseEntity.ok(userService.checkName(checkRequestDTO.checkname()));
     }
 
     @PostMapping("/check-username")
     @Operation(summary = "아이디 중복 확인")
-    public ResponseEntity<CheckUsernameResponseDTO> checkUsername(@RequestBody @Valid CheckRequestDTO checkRequestDTO) {
+    public ResponseEntity<?> checkUsername(@RequestBody @Valid CheckRequestDTO checkRequestDTO) {
         return ResponseEntity.ok(userService.checkUsername(checkRequestDTO.checkname()));
     }
 
