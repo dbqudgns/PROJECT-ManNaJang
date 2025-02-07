@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -46,14 +47,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .formLogin((auth) -> auth.disable());
 
-
+        http.headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/gpt").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/gpt/**", "/h2-console/**", "/posts/**").permitAll()
                 .requestMatchers("/", "/login", "/logout", "/user/login", "/user/logout", "/user/check-name", "/user/check-username", "/user/register", "/reissue").permitAll()
-                .requestMatchers("/user/profile/**", "/heart/**", "/review/**", "/posts/**", "/comments/**", "/reply/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
-                .anyRequest().authenticated());
 
+                .requestMatchers("/user/profile/**", "/heart/**", "/review/**", "/posts/**", "/comments/**", "/reply/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+
+                .anyRequest().authenticated());
 
         http
             .addFilterBefore(new JWTCheckFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

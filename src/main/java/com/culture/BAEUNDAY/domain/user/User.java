@@ -3,7 +3,6 @@ package com.culture.BAEUNDAY.domain.user;
 import com.culture.BAEUNDAY.domain.comment.Comment;
 import com.culture.BAEUNDAY.domain.heart.Heart;
 import com.culture.BAEUNDAY.domain.reply.Reply;
-import com.culture.BAEUNDAY.domain.review.Review;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_tb")
 @Data
 @DynamicInsert
 public class User {

@@ -1,12 +1,13 @@
 package com.culture.BAEUNDAY.exception;
 
+
+import com.culture.BAEUNDAY.domain.chatGPT.GptController;
+import com.culture.BAEUNDAY.domain.post.PostRestController;
 import com.culture.BAEUNDAY.domain.comment.CommentController;
 import com.culture.BAEUNDAY.domain.reply.ReplyController;
 import com.culture.BAEUNDAY.domain.review.ReviewController;
 import com.culture.BAEUNDAY.domain.user.UserController;
-import com.culture.BAEUNDAY.domain.user.DTO.response.ErrorResult;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,8 +20,8 @@ import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestControllerAdvice(assignableTypes = {UserController.class, ReviewController.class,
-                                        CommentController.class, ReplyController.class})
+
+@RestControllerAdvice(assignableTypes = {UserController.class, ReviewController.class, PostRestController.class, GptController.class, CommentController.class, ReplyController.class})
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

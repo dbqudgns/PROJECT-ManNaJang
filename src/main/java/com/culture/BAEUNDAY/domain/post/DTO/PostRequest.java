@@ -30,11 +30,11 @@ public class PostRequest {
             @NotNull
             Integer fee,
 
-            @NotBlank
+            @NotNull
             LocalDateTime startDate,
-            @NotBlank
+            @NotNull
             LocalDateTime endDate,
-            @NotBlank
+            @NotNull
             Province province,
             @NotBlank
             String city,
@@ -46,13 +46,12 @@ public class PostRequest {
             Integer maxP,
             @NotBlank
             String content,
-            @NotBlank
+            @NotNull
             Status status,
-            @NotBlank
+            @NotNull
             LocalDateTime createdDate,
-            @NotBlank
-            LocalDateTime deadline,
-            Long numsOfHeart
+            @NotNull
+            LocalDateTime deadline
 
     ){}
 
