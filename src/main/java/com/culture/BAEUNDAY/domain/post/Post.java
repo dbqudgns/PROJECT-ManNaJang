@@ -53,8 +53,7 @@ public class Post {
     @Column(nullable = false)
     private Integer fee;
 
-
-    @Column(nullable = false)
+    @Column(name = "fee_range", nullable = false)
     @Enumerated(EnumType.STRING)
     private Fee feeRange;
 
@@ -94,7 +93,7 @@ public class Post {
     private LocalDateTime deadline;
 
 
-    @Column(nullable = false)
+    @Column(name = "nums_of_heart", nullable = false)
     private Integer numsOfHeart;
 
 

@@ -79,10 +79,19 @@ public class UserController {
         return ResponseEntity.ok(userService.seeProfile(userId, customUserDetails));
     }
 
+    @GetMapping("/profile/posts")
+    @Operation(summary = "내가 작성한 글 조회")
+    public ResponseEntity<?> getPosts(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return ResponseEntity.ok(userService.getPosts(customUserDetails));
+    }
+
     //사용자 이미지 수정 : 추후 작성
 
 
     //사용자 이미지 삭제(S3의 기본 이미지 경로명 반환해야 함) : 추후 작성
+
+
+
 
 }
 

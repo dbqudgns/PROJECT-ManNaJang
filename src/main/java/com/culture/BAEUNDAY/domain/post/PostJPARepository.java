@@ -1,5 +1,6 @@
 package com.culture.BAEUNDAY.domain.post;
 
+import com.culture.BAEUNDAY.domain.user.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -48,4 +49,6 @@ public interface PostJPARepository extends JpaRepository<Post, Long> {
     List<Post> findAllByDateAndFeeLessThanCursor(@Param("cursor") LocalDateTime cursor, @Param("cursorId")Long cursorID, @Param("fee")Fee fee, Pageable request);
     @Query("select p from Post p where (p.createdDate < :cursor and p.status = :status ) or (p.createdDate = :cursor and p.id < :cursorId and p.status = :status) order by p.createdDate desc ")
     List<Post> findAllByDateAndStatusLessThanCursor(@Param("cursor")LocalDateTime cursor, @Param("cursorId")Long cursorID, @Param("status")Status status, Pageable request);
+
+    List<Post> findByUser(User user);
 }
