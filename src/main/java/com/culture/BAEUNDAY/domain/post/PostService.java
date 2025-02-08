@@ -182,7 +182,7 @@ public class PostService {
     }
 
 
-    private Post getPostById(Long postId) {
+    public Post getPostById(Long postId) {
             return  postJPARepository.findById(postId).orElseThrow(
                     () -> new IllegalArgumentException("해당 포스트를 찾을 수 없습니다.")
             );

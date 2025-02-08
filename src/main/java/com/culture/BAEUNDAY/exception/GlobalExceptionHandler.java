@@ -2,6 +2,7 @@ package com.culture.BAEUNDAY.exception;
 
 
 import com.culture.BAEUNDAY.domain.chatGPT.GptController;
+import com.culture.BAEUNDAY.domain.heart.HeartRestController;
 import com.culture.BAEUNDAY.domain.post.PostRestController;
 import com.culture.BAEUNDAY.domain.comment.CommentController;
 import com.culture.BAEUNDAY.domain.reply.ReplyController;
@@ -29,6 +30,7 @@ import java.util.Map;
         GptController.class,
         CommentController.class,
         ReplyController.class,
+        HeartRestController.class,
         ReserveRestController.class
 })
 public class GlobalExceptionHandler {

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "comment_tb")
 @Getter
 public class Comment {
 
