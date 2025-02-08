@@ -2,7 +2,10 @@ package com.culture.BAEUNDAY.domain.review;
 
 import com.culture.BAEUNDAY.domain.review.DTO.request.ReviewRequestDTO;
 import com.culture.BAEUNDAY.domain.review.DTO.request.updateReviewRequestDTO;
+import com.culture.BAEUNDAY.domain.review.DTO.response.ReviewResponseDTO;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
+import com.culture.BAEUNDAY.utils.ApiUtils;
+import com.culture.BAEUNDAY.utils.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -12,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/review")
@@ -23,15 +27,19 @@ public class ReviewController {
 
     @GetMapping("/me")
     @Operation(summary = "나의 별점 조회")
-    public ResponseEntity<?> getMyReviews(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        return ResponseEntity.ok(reviewService.getMyReviews(customUserDetails));
+    public ResponseEntity<?> getMyReviews(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                          @RequestParam(value = "cursor", required = false) String cursor) {
+        PageResponse<Long, List<ReviewResponseDTO>> responseDto = reviewService.getMyReviews(customUserDetails,cursor);
+        return ResponseEntity.ok(ApiUtils.success(responseDto));
     }
 
     @GetMapping("/other/{user_id}")
     @Operation(summary = "특정 사용자의 별점 조회")
     public ResponseEntity<?> getOtherReviews(@PathVariable("user_id") Long id,
-                                            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        return ResponseEntity.ok(reviewService.getOtherReviews(id, customUserDetails));
+                                            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                             @RequestParam(value = "cursor", required = false) String cursor) {
+        PageResponse<Long, List<ReviewResponseDTO>> responseDto = reviewService.getOtherReviews(id, customUserDetails,cursor);
+        return ResponseEntity.ok(ApiUtils.success(responseDto));
     }
 
     @PostMapping("/{user_id}")

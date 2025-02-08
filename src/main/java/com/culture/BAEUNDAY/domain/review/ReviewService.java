@@ -7,10 +7,12 @@ import com.culture.BAEUNDAY.domain.user.User;
 import com.culture.BAEUNDAY.domain.user.UserRepository;
 import com.culture.BAEUNDAY.domain.user.UserService;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
+import com.culture.BAEUNDAY.utils.CursorRequest;
+import com.culture.BAEUNDAY.utils.CursorResponse;
+import com.culture.BAEUNDAY.utils.PageResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -26,54 +29,30 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
-    public List<ReviewResponseDTO> getMyReviews(CustomUserDetails customUserDetails) {
+    public PageResponse<Long,  List<ReviewResponseDTO>> getMyReviews(CustomUserDetails customUserDetails, String cursor) {
 
         User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
-        List<ReviewResponseDTO> reviewList = new ArrayList<>();
+        CursorRequest<Long> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Long.class, 0L) ;
+        List<Review> reviews = reviewRepository.findByRevieweeIdWithCursor(user.getId(), page.cursor, page.request);
 
-        List<Review> reviews = reviewRepository.findByRevieweeId(user.getId());
+        return createCursorPageResponse(Review::getId, reviews);
 
-        for (Review review : reviews) {
-
-            reviewList.add(ReviewResponseDTO.builder()
-                    .review_id(review.getId())
-                    .name(review.getReviewer().getName())
-                    .field(review.getField())
-                    .star(review.getStar())
-                    .createdDate(review.getCreatedDate())
-                    .build());
-
-        }
-
-        return reviewList;
     }
 
-    public List<ReviewResponseDTO> getOtherReviews(Long otherId, CustomUserDetails customUserDetails) {
+    public  PageResponse<Long,  List<ReviewResponseDTO>> getOtherReviews(Long otherId, CustomUserDetails customUserDetails,String cursor) {
 
         User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
         User findUser = userRepository.findById(otherId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 대상자를 찾을 수 없습니다."));
 
-        List<ReviewResponseDTO> reviewList = new ArrayList<>();
+        CursorRequest<Long> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Long.class, 0L) ;
+        List<Review> reviews = reviewRepository.findByRevieweeIdWithCursor(otherId, page.cursor, page.request);
 
-        List<Review> reviews = reviewRepository.findByRevieweeId(otherId);
-
-        for (Review review : reviews) {
-
-            reviewList.add(ReviewResponseDTO.builder()
-                    .review_id(review.getId())
-                    .name(review.getReviewer().getName())
-                    .field(review.getField())
-                    .star(review.getStar())
-                    .createdDate(review.getCreatedDate())
-                    .build());
-
-        }
-
-        return reviewList;
+        return createCursorPageResponse(Review::getId, reviews);
     }
 
     @Transactional
@@ -149,5 +128,34 @@ public class ReviewService {
 
     }
 
+    private PageResponse<Long, List<ReviewResponseDTO>> createCursorPageResponse(
+            Function<Review, Long> cursorExtractor,
+            List<Review> reviews
+    ){
+        if (reviews.isEmpty()) {
+            return new PageResponse<>(new CursorResponse<>(false, 0,null,null ),null);
+        }
+        int size = reviews.size();
+        boolean hasNext = false;
+        if ( size == PAGE_SIZE_PLUS_ONE ){
+            reviews.remove( size - 1) ;
+            size -= 1;
+            hasNext = true;
+        }
+        List<ReviewResponseDTO> reviewList = new ArrayList<>();
 
+        for (Review review : reviews) {
+            reviewList.add(ReviewResponseDTO.builder()
+                    .review_id(review.getId())
+                    .name(review.getReviewer().getName())
+                    .field(review.getField())
+                    .star(review.getStar())
+                    .createdDate(review.getCreatedDate())
+                    .build());
+        }
+        Review lastReview = reviews.get(size - 1) ;
+        Long nextCursor =  lastReview.getId();
+        return new PageResponse<>(new CursorResponse<>(hasNext, size, nextCursor, nextCursor), reviewList);
+
+    }
 }

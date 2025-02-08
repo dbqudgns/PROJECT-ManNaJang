@@ -9,7 +9,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reply")
+@Table(name = "reply_tb")
 @Getter
 public class Reply {
 

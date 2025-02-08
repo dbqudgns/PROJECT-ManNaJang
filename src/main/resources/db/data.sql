@@ -2,7 +2,8 @@
 INSERT INTO user_tb ( name, username, password, role, manner,field, profile_img)
 VALUES
     ('seung','seung','1234','USER',null,null,null),
-    ('hyun','hyun','1234','USER',null,null,null);
+    ('hyun','hyun','1234','USER',null,null,null),
+    ('sie','zie','1234','USER',null,null,null);
 
 INSERT INTO post_tb (title, user_id, imgURL, subject, goal, outline, target_student, level, contact_method, fee, fee_range, start_date, end_date, province, city, address, minP, maxP, content, status, created_date, deadline, nums_of_heart)
 VALUES
@@ -21,7 +22,7 @@ VALUES
     ('요가와 명상', 1, 'img12.jpg', '건강', '요가 및 명상을 통한 스트레스 해소', '기본적인 요가 자세 및 호흡법 익히기', '중년이상', '중급', '체험', 400000,'OVER_10', '2025-06-01 07:00:00', '2025-07-01 09:00:00', '서울', '강동구', '강동 요가센터', 10, 20, '1주차 : 요가 기본 자세 2주차 : 명상 기법', 'AVAILABLE', '2025-04-10 10:00:00', '2025-05-25 23:59:59', 60),
     ('드론 조종 입문', 1, 'img13.jpg', '기술', '드론 조종법 및 안전 교육', '기본 드론 조작 및 촬영 기법 익히기', '청소년', '초급', '체험', 50000,'BETWEEN5_10', '2025-07-10 09:00:00', '2025-08-10 18:00:00', '대구', '수성구', '대구 드론 센터', 8, 20, '1주차 : 기본 조종법 2주차 : 공중 촬영 연습', 'AVAILABLE', '2025-05-01 10:00:00', '2025-06-30 23:59:59', 75);
 
-INSERT INTO comment(post_id, user_id, field, createdDate)
+INSERT INTO comment(post_id, user_id, field, created_date)
 VALUES
     (1, 1, '첫 번째 댓글', '2025-02-07 18:00:00'),
     (1, 2, '두 번째 댓글', '2025-02-07 18:01:00'),

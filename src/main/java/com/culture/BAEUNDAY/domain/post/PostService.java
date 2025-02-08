@@ -29,7 +29,6 @@ public class PostService {
     public PageResponse<? extends Comparable<?> , PostResponse.FindAllDTO> findAll(String sort, Status status, Fee fee, String cursor, Long cursorId) {
         List<Post> posts;
 
-
         switch( sort ) {
             case "id" -> {
                 CursorRequest<Long> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Long.class, cursorId );

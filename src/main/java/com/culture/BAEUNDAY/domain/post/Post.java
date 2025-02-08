@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "post")
+@Table(name = "post_tb")
 public class Post {
 
     @Id
@@ -58,7 +58,6 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private Fee feeRange;
 
-    @Column(nullable = false)
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate ;
 
