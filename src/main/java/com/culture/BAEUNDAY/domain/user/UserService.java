@@ -1,20 +1,28 @@
 package com.culture.BAEUNDAY.domain.user;
 
+import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
+import com.culture.BAEUNDAY.domain.post.Post;
+import com.culture.BAEUNDAY.domain.post.PostJPARepository;
 import com.culture.BAEUNDAY.domain.user.DTO.response.*;
 import com.culture.BAEUNDAY.domain.user.DTO.request.RegisterRequestDTO;
 import com.culture.BAEUNDAY.domain.user.DTO.request.UpdateProfileRequestDTO;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PostJPARepository postRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
@@ -123,5 +131,22 @@ public class UserService {
         }
 
         return user;
+    }
+
+
+    public List<PostResponse.PostDTO> getPosts(CustomUserDetails customUserDetails ) {
+
+        User user = findUserByUsernameOrThrow(customUserDetails.getUsername());
+
+        List<Post> posts = postRepository.findByUser(user);
+
+        List<PostResponse.PostDTO> postDTOList = new ArrayList<>();
+
+        for (Post post : posts) {
+            PostResponse.PostDTO postDTO = new PostResponse.PostDTO(post);
+            postDTOList.add(postDTO);
+        }
+
+        return postDTOList;
     }
 }
