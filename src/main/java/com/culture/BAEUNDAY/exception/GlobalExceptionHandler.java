@@ -2,6 +2,7 @@ package com.culture.BAEUNDAY.exception;
 
 
 import com.culture.BAEUNDAY.domain.chatGPT.GptController;
+import com.culture.BAEUNDAY.domain.heart.HeartRestController;
 import com.culture.BAEUNDAY.domain.post.PostRestController;
 import com.culture.BAEUNDAY.domain.comment.CommentController;
 import com.culture.BAEUNDAY.domain.reply.ReplyController;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@RestControllerAdvice(assignableTypes = {UserController.class, ReviewController.class, PostRestController.class, GptController.class, CommentController.class, ReplyController.class})
+@RestControllerAdvice(assignableTypes = {UserController.class, ReviewController.class, PostRestController.class, GptController.class, CommentController.class, ReplyController.class, HeartRestController.class})
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
