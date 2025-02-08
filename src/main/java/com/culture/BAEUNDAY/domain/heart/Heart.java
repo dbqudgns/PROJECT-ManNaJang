@@ -4,7 +4,7 @@ import com.culture.BAEUNDAY.domain.user.User;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "heart")
+@Table(name = "heart_tb")
 public class Heart {
 
     @Id
