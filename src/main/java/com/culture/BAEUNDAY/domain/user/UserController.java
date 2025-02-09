@@ -1,9 +1,6 @@
 package com.culture.BAEUNDAY.domain.user;
 
-import com.culture.BAEUNDAY.domain.user.DTO.request.CheckRequestDTO;
-import com.culture.BAEUNDAY.domain.user.DTO.request.LoginDTO;
-import com.culture.BAEUNDAY.domain.user.DTO.request.RegisterRequestDTO;
-import com.culture.BAEUNDAY.domain.user.DTO.request.UpdateProfileRequestDTO;
+import com.culture.BAEUNDAY.domain.user.DTO.request.*;
 import com.culture.BAEUNDAY.domain.user.DTO.response.CheckNameResponseDTO;
 import com.culture.BAEUNDAY.domain.user.DTO.response.CheckUsernameResponseDTO;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
@@ -13,9 +10,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -28,6 +27,7 @@ public class UserController {
     private final UserService userService;
     private final LoginService loginService;
     private final LogoutService logoutService;
+    private final ImageService imageService;
 
     @PostMapping("/login")
     @Operation(summary = "로그인")
@@ -65,11 +65,25 @@ public class UserController {
         return ResponseEntity.ok(userService.checkProfile(customUserDetails));
     }
 
-    @PutMapping("/profile")
-    @Operation(summary = "내 프로필 정보 수정")
-    public ResponseEntity<?> updateProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                           @RequestBody @Valid UpdateProfileRequestDTO updateProfileRequestDTO) {
-        return ResponseEntity.ok(userService.updateProfile(customUserDetails, updateProfileRequestDTO));
+    @PostMapping("/login-check-name")
+    @Operation(summary = "로그인한 사용자의 닉네임 중복 확인")
+    public ResponseEntity<?> checkNameLogin(@RequestBody @Valid CheckRequestDTO checkRequestDTO,
+                                            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return ResponseEntity.ok(userService.checkNameLogin(checkRequestDTO.checkname(), customUserDetails));
+    }
+
+    @PutMapping("/profile/name")
+    @Operation(summary = "로그인한 사용자의 닉네임 중복 확인 후 닉네임 변경")
+    public ResponseEntity<?> newName(@RequestBody @Valid UpdateNameRequestDTO updateNameRequestDTO,
+                                     @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return ResponseEntity.ok(userService.updateName(updateNameRequestDTO.name(), customUserDetails));
+    }
+
+    @PutMapping("/profile/field")
+    @Operation(summary = "로그인한 사용자의 한 줄 소개 변경")
+    public ResponseEntity<?> newName(@RequestBody @Valid UpdateFieldRequestDTO updateFieldRequestDTO,
+                                     @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return ResponseEntity.ok(userService.updateField(updateFieldRequestDTO.field(), customUserDetails));
     }
 
     @GetMapping("/profile/{user_id}")
@@ -85,11 +99,20 @@ public class UserController {
         return ResponseEntity.ok(userService.getPosts(customUserDetails));
     }
 
-    //사용자 이미지 수정 : 추후 작성
+    @PostMapping(value = "/profile/img/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "프로필 이미지 수정")
+    public ResponseEntity<?> s3Upload(@RequestParam String deleteImage,
+                                      @RequestPart(value = "image") MultipartFile image,
+                                      @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return ResponseEntity.ok(imageService.uploadImg(customUserDetails, deleteImage, image));
+    }
 
-
-    //사용자 이미지 삭제(S3의 기본 이미지 경로명 반환해야 함) : 추후 작성
-
+    @DeleteMapping("/profile/img/delete")
+    @Operation(summary = "프로필 이미지 삭제")
+    public ResponseEntity<?> s3Delete(@RequestParam String image,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return ResponseEntity.ok(imageService.deleteImg(customUserDetails, image));
+    }
 
 
 

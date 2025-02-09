@@ -5,7 +5,7 @@ import com.culture.BAEUNDAY.domain.heart.Heart;
 import com.culture.BAEUNDAY.domain.reply.Reply;
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user_tb")
-@Data
+@Getter
 @DynamicInsert
 public class User {
 
@@ -59,8 +59,15 @@ public class User {
         this.profileImg = profileImg;
     }
 
-    public void profileUpdate(String name, String field) {
+    public void profileImg(String profileImg) {
+        this.profileImg = profileImg;
+    }
+
+    public void profileName(String name) {
         this.name = name;
+    }
+
+    public void profileField(String field) {
         this.field = field;
     }
 
