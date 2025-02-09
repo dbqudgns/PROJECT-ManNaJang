@@ -2,9 +2,11 @@ package com.culture.BAEUNDAY.exception;
 
 
 import com.culture.BAEUNDAY.domain.chatGPT.GptController;
+import com.culture.BAEUNDAY.domain.heart.HeartRestController;
 import com.culture.BAEUNDAY.domain.post.PostRestController;
 import com.culture.BAEUNDAY.domain.comment.CommentController;
 import com.culture.BAEUNDAY.domain.reply.ReplyController;
+import com.culture.BAEUNDAY.domain.reserve.ReserveRestController;
 import com.culture.BAEUNDAY.domain.review.ReviewController;
 import com.culture.BAEUNDAY.domain.user.UserController;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,7 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@RestControllerAdvice(assignableTypes = {UserController.class, ReviewController.class, PostRestController.class, GptController.class, CommentController.class, ReplyController.class})
+@RestControllerAdvice(assignableTypes = {
+        UserController.class,
+        ReviewController.class,
+        PostRestController.class,
+        GptController.class,
+        CommentController.class,
+        ReplyController.class,
+        HeartRestController.class,
+        ReserveRestController.class
+})
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
