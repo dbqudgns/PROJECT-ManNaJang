@@ -1,4 +1,4 @@
-package com.culture.BAEUNDAY.domain.user.DTO.response;
+package com.culture.BAEUNDAY.utils.s3;
 
 import lombok.Builder;
 
