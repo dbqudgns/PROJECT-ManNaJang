@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "post")
+@Table(name = "post_tb")
 public class Post {
 
     @Id
