@@ -42,9 +42,9 @@ public class ReviewController {
         return ResponseEntity.ok(ApiUtils.success(responseDto));
     }
 
-    @PostMapping("/{user_id}")
+    @PostMapping("/{post_id}")
     @Operation(summary = "별점 등록")
-    public ResponseEntity<?> registerReview(@PathVariable("user_id") Long id, @RequestBody @Valid ReviewRequestDTO reviewRequest,
+    public ResponseEntity<?> registerReview(@PathVariable("post_id") Long id, @RequestBody @Valid ReviewRequestDTO reviewRequest,
                                             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         return ResponseEntity.ok(reviewService.registerReview(id, reviewRequest, customUserDetails));
     }

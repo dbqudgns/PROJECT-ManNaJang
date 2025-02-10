@@ -13,7 +13,6 @@ public class PostRequest {
 
             @NotBlank(message = "제목은 필수 입력입니다")
             String title,
-            String imgURL,
             @NotBlank
             String subject,
             @NotBlank

@@ -1,5 +1,7 @@
 package com.culture.BAEUNDAY.domain.review;
 
+import com.culture.BAEUNDAY.domain.post.Post;
+import com.culture.BAEUNDAY.domain.post.PostJPARepository;
 import com.culture.BAEUNDAY.domain.review.DTO.request.ReviewRequestDTO;
 import com.culture.BAEUNDAY.domain.review.DTO.request.updateReviewRequestDTO;
 import com.culture.BAEUNDAY.domain.review.DTO.response.ReviewResponseDTO;
@@ -16,10 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
@@ -29,6 +28,8 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final PostJPARepository postJPARepository;
+
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
     public PageResponse<Long,  List<ReviewResponseDTO>> getMyReviews(CustomUserDetails customUserDetails, String cursor) {
@@ -56,12 +57,14 @@ public class ReviewService {
     }
 
     @Transactional
-    public ReviewResponseDTO registerReview(Long otherId, ReviewRequestDTO reviewRequest, CustomUserDetails customUserDetails) {
+    public ReviewResponseDTO registerReview(Long postId, ReviewRequestDTO reviewRequest, CustomUserDetails customUserDetails) {
 
         User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
-        User reviewee = userRepository.findById(otherId)
-                .orElseThrow(() -> new EntityNotFoundException("별점 대상자를 찾을 수 없습니다."));
+        Post post = postJPARepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 게시글을 찾을 수 없습니다."));
+
+        User reviewee = post.getUser();
 
         Review review = Review.builder()
                 .reviewer(user)
@@ -78,6 +81,7 @@ public class ReviewService {
                 .name(user.getName())
                 .field(review.getField())
                 .star(review.getStar())
+                .title(post.getTitle())
                 .createdDate(review.getCreatedDate())
                 .build();
 

@@ -10,6 +10,7 @@ public record ReviewResponseDTO(
         String name,
         String field,
         Integer star,
+        String title,
         LocalDateTime createdDate
 ){
 }

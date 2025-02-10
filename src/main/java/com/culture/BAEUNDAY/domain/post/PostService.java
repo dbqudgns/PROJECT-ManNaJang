@@ -7,10 +7,14 @@ import com.culture.BAEUNDAY.domain.user.UserRepository;
 import com.culture.BAEUNDAY.utils.CursorRequest;
 import com.culture.BAEUNDAY.utils.CursorResponse;
 import com.culture.BAEUNDAY.utils.PageResponse;
+import com.culture.BAEUNDAY.utils.s3.ForImageResponseDTO;
+import com.culture.BAEUNDAY.utils.s3.ImageResponseDTO;
+import com.culture.BAEUNDAY.utils.s3.PostImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +27,8 @@ public class PostService {
 
     private final PostJPARepository postJPARepository;
     private final UserRepository userRepository;
+    private final PostImageService postImageService;
+
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
     @Transactional
@@ -74,13 +80,15 @@ public class PostService {
     }
 
     @Transactional
-    public void create(String username, PostRequest.PostRequestDto request) {
+    public ForImageResponseDTO create(String username, MultipartFile image, PostRequest.PostRequestDto request) {
         User user = getUserByName(username);
         Fee feeRange = getFeeRange(request.fee());
 
+        ForImageResponseDTO forImageResponseDTO = postImageService.uploadImg(image);
+
         Post post = Post.builder()
                 .title(request.title())
-                .imgURL(request.imgURL())
+                .imgURL(forImageResponseDTO.postImg())
                 .subject(request.subject())
                 .goal(request.goal())
                 .outline(request.outline())
@@ -104,10 +112,12 @@ public class PostService {
                 .user(user) // TODO : User 매핑
                 .build();
         postJPARepository.save(post);
+
+        return forImageResponseDTO;
     }
 
     @Transactional
-    public void update(String username, Long postId, PostRequest.PostRequestDto request){
+    public ForImageResponseDTO update(String username, Long postId, String beforeImageAddress, MultipartFile image, PostRequest.PostRequestDto request){
         User user = getUserByName(username);
         Post post = getPostById(postId);
 
@@ -115,9 +125,12 @@ public class PostService {
             throw new IllegalArgumentException("해당 사용자가 작성한 게시글이 아닙니다.");
         }
         Fee feeRange = getFeeRange(request.fee());
+
+        ForImageResponseDTO forImageResponseDTO = postImageService.updateImg(post, beforeImageAddress, image);
+
         post.update(
                 request.title(),
-                request.imgURL(),
+                forImageResponseDTO.postImg(),
                 request.subject(),
                 request.goal(),
                 request.outline(),
@@ -138,6 +151,8 @@ public class PostService {
                 request.createdDate(),
                 request.deadline()
         );
+
+        return forImageResponseDTO;
     }
 
     @Transactional
@@ -148,6 +163,8 @@ public class PostService {
         if (!Objects.equals(user.getName(), post.getUser().getName())) {
             throw new IllegalArgumentException("해당 사용자가 작성한 게시글이 아닙니다.");
         }
+
+        postImageService.deleteImg(post.getImgURL()); //s3에 저장된 게시글 이미지 부터 삭제
         postJPARepository.delete(post);
     }
 

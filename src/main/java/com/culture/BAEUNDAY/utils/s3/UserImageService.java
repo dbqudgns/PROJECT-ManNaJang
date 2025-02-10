@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ImageService {
+public class UserImageService {
 
     private final AmazonS3 amazonS3;
     private final UserService userService;
@@ -37,7 +37,7 @@ public class ImageService {
 
         User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
-        if(image.isEmpty() || Objects.isNull(image.getOriginalFilename())) {
+        if(image == null || image.isEmpty() || image.getOriginalFilename() == null) {
             throw new IllegalArgumentException("파일이 비어 있거나 파일명이 없습니다.");
         }
 
