@@ -44,21 +44,24 @@ public class ReviewController {
 
     @PostMapping("/{user_id}")
     @Operation(summary = "별점 등록")
-    public ResponseEntity<?> registerReview(@PathVariable("user_id") Long id, @RequestBody @Valid ReviewRequestDTO reviewRequest,
+    public ResponseEntity<?> registerReview(@PathVariable("user_id") Long id,
+                                            @RequestBody @Valid ReviewRequestDTO reviewRequest,
                                             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         return ResponseEntity.ok(reviewService.registerReview(id, reviewRequest, customUserDetails));
     }
 
     @PutMapping("/{review_id}")
     @Operation(summary = "별점 수정")
-    public ResponseEntity<?> updateReview(@PathVariable("review_id") Long id, @RequestBody @Valid updateReviewRequestDTO updateReviewRequest,
+    public ResponseEntity<?> updateReview(@PathVariable("review_id") Long id,
+                                          @RequestBody @Valid updateReviewRequestDTO updateReviewRequest,
                                           @AuthenticationPrincipal CustomUserDetails customUserDetails) throws AccessDeniedException {
         return ResponseEntity.ok(reviewService.updateReview(id, updateReviewRequest, customUserDetails));
     }
 
     @DeleteMapping("/{review_id}")
     @Operation(summary = "별점 삭제")
-    public ResponseEntity<?> deleteReview(@PathVariable("review_id") Long id, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws AccessDeniedException {
+    public ResponseEntity<?> deleteReview(@PathVariable("review_id") Long id,
+                                          @AuthenticationPrincipal CustomUserDetails customUserDetails) throws AccessDeniedException {
         return ResponseEntity.ok(reviewService.deleteReview(id, customUserDetails));
     }
 

@@ -33,12 +33,12 @@ public class HeartService {
 
         if (heart.isPresent()) {
             heartJPARepository.delete(heart.get());
-            post.removeHeart();
+            post.removeHeart(heart.get());
             return ("찜 취소");
         }else {
             Heart newHeart = Heart.builder().user(user).post(post).createdDate(requestDto.createdDate()).build();
             heartJPARepository.save(newHeart);
-            post.addHeart();
+            post.addHeart(newHeart);
             return ("찜 등록") ;
         }
     }

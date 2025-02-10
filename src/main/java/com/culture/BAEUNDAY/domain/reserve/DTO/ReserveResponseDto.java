@@ -1,6 +1,7 @@
 package com.culture.BAEUNDAY.domain.reserve.DTO;
 
 import com.culture.BAEUNDAY.domain.post.Province;
+import com.culture.BAEUNDAY.domain.reserve.MyStatus;
 import com.culture.BAEUNDAY.domain.reserve.Status;
 import lombok.Builder;
 
@@ -15,6 +16,7 @@ public record ReserveResponseDto(
         String city,
         Integer fee,
         Status status,
+        MyStatus myStatus,
         LocalDateTime startDate,
         LocalDateTime reservationDate){
 

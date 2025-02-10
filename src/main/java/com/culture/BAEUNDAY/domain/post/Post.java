@@ -1,5 +1,7 @@
 package com.culture.BAEUNDAY.domain.post;
 
+import com.culture.BAEUNDAY.domain.heart.Heart;
+import com.culture.BAEUNDAY.domain.reserve.Reserve;
 import com.culture.BAEUNDAY.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Builder
@@ -92,17 +96,23 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime deadline;
 
-
     @Column(name = "nums_of_heart", nullable = false)
     private Integer numsOfHeart;
 
+    @Column(name = "nums_of_participant", nullable = false)
+    private Integer numsOfParticipant;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Heart> hearts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Reserve> reserves = new ArrayList<>();
 
     public void update(String title, String imgURL, String subject, String goal, String outline,
                        String targetStudent, String level, String contactMethod, Integer fee, Fee feeRange,
                        LocalDateTime startDate, LocalDateTime endDate, Province province, String city,
                        String address, int minP, int maxP, String content, Status status,
                        LocalDateTime createdDate, LocalDateTime deadline) {
-
         this.title = title;
         this.imgURL = imgURL;
         this.subject = subject;
@@ -126,11 +136,27 @@ public class Post {
         this.deadline = deadline;
     }
 
-    public void addHeart(){
+    public void addHeart(Heart heart){
+        this.hearts.add(heart);
         this.numsOfHeart += 1;
     }
-    public void removeHeart(){
+    public void removeHeart(Heart heart){
+        this.hearts.remove(heart);
         this.numsOfHeart -= 1;
+    }
+    public void addParticipant(Reserve reserve){
+        this.reserves.add(reserve);
+        this.numsOfParticipant += 1;
+        if (this.numsOfParticipant == this.maxP && this.status == Status.AVAILABLE) {
+            this.status = Status.ING;
+        }
+    }
+    public void removeParticipant(Reserve reserve){
+        this.reserves.remove(reserve);
+        this.numsOfParticipant -= 1;
+        if (this.numsOfParticipant < this.maxP && this.status == Status.ING) {
+            this.status = Status.AVAILABLE;
+        }
     }
 
 
