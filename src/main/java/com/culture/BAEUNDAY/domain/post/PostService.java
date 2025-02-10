@@ -101,7 +101,8 @@ public class PostService {
                 .createdDate(request.createdDate())
                 .deadline(request.deadline())
                 .numsOfHeart(0)
-                .user(user) // TODO : User 매핑
+                .numsOfParticipant(0)
+                .user(user)
                 .build();
         postJPARepository.save(post);
     }
@@ -175,9 +176,13 @@ public class PostService {
     }
 
     @Transactional
-    public PageResponse<?, PostResponse.FindByIdDTO> findById(Long postId) {
+    public PageResponse<?, PostResponse.FindByIdDTO> findById(Long postId, String user) {
         Post post = getPostById(postId);
-        PostResponse.FindByIdDTO findByIdDTO = new PostResponse.FindByIdDTO(post);
+        User visitor = getUserByName(user);
+        User writer = getUserByName(post.getUser().getName());
+        boolean isMine = false;
+        if (visitor.equals(writer)) {isMine = true;} // 본인 글 체크
+        PostResponse.FindByIdDTO findByIdDTO = new PostResponse.FindByIdDTO(post, writer, isMine);
         return new PageResponse<>( null, findByIdDTO);
     }
 
