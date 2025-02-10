@@ -30,9 +30,10 @@ public class ReserveService {
     @Transactional
     public String reserve(String username, ReserveRequestDto requestDto) {
 
-        User user = userService.findUserByUsernameOrThrow(username);
+        User participant = userService.findUserByUsernameOrThrow(username);
         Post post = postService.getPostById(requestDto.postId());
-        Optional<Reserve> reserve = reserveJPARepository.findByUserAndPost(user,post);
+        User host = userService.findUserByUsernameOrThrow(post.getUser().getUsername());
+        Optional<Reserve> reserve = reserveJPARepository.findByUserAndPost(participant,post);
 
         if (reserve.isPresent()) {
             reserveJPARepository.delete(reserve.get());
@@ -42,10 +43,16 @@ public class ReserveService {
             if (post.getNumsOfParticipant() >= post.getMaxP() ){
                 throw new IllegalArgumentException("수강인원이 다 모집되어 신청할 수 없습니다.");
             }
-            if (post.getUser().equals(user)){
+            if (host.equals(participant)){
                 throw new IllegalArgumentException("본인이 작성한 프로그램은 신청할 수 없습니다.");
             }
-            Reserve newReserve = Reserve.builder().user(user).post(post).reservationDate(requestDto.reservationDate()).status(Status.PAYMENT).myStatus(MyStatus.NOT_OPEN).build();
+            Reserve newReserve = Reserve.builder()
+                    .user(participant)
+                    .post(post)
+                    .postUserId(host.getId())
+                    .reservationDate(requestDto.reservationDate())
+                    .status(Status.PAYMENT)
+                    .myStatus(MyStatus.NOT_OPEN).build();
             reserveJPARepository.save(newReserve);
             post.addParticipant(newReserve);
             return ("신청 완료") ;
