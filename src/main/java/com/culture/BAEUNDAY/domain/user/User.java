@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "user_tb")
+@Table(name = "user")
 @Getter
 @DynamicInsert
 public class User {
