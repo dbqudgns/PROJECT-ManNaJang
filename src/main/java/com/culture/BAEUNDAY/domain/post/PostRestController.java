@@ -40,8 +40,9 @@ public class PostRestController {
 
     @Operation(summary = "특정 프로그램 조회")
     @GetMapping("/{postId}")
-    public  ResponseEntity<?> findPostById(@PathVariable(name = "postId") Long postId ){
-        PageResponse<?, PostResponse.FindByIdDTO> responseDTO = postService.findById(postId);
+    public  ResponseEntity<?> findPostById( @AuthenticationPrincipal CustomUserDetails userDetails,
+                                            @PathVariable(name = "postId") Long postId ){
+        PageResponse<?, PostResponse.FindByIdDTO> responseDTO = postService.findById(postId, userDetails.getUsername());
         return ResponseEntity.ok(ApiUtils.success(responseDTO));
 
     }

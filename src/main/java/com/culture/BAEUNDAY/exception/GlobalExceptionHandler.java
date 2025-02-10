@@ -8,6 +8,7 @@ import com.culture.BAEUNDAY.domain.post.PostRestController;
 import com.culture.BAEUNDAY.domain.reply.ReplyController;
 import com.culture.BAEUNDAY.domain.review.ReviewController;
 import com.culture.BAEUNDAY.domain.user.UserController;
+import com.openai.errors.OpenAIException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +96,16 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(errorResult, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(OpenAIException.class)
+    public ResponseEntity<ErrorResult> openAIError(Exception ex) {
+        ErrorResult errorResult = ErrorResult.builder()
+                .status(ex.hashCode())
+                .message(ex.getMessage())
+                .errorCode(String.valueOf(ex.hashCode()))
+                .build();
+        return new ResponseEntity<>(errorResult, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 }

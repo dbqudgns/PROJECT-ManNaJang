@@ -12,6 +12,7 @@ import com.culture.BAEUNDAY.utils.CursorResponse;
 import com.culture.BAEUNDAY.utils.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,25 +26,40 @@ public class ReserveService {
     private final PostService postService;
     private final UserService userService;
     private static final int PAGE_SIZE_PLUS_ONE = 4+1;
+
+    @Transactional
     public String reserve(String username, ReserveRequestDto requestDto) {
 
-        User user = userService.findUserByUsernameOrThrow(username);
+        User participant = userService.findUserByUsernameOrThrow(username);
         Post post = postService.getPostById(requestDto.postId());
-        Optional<Reserve> reserve = reserveJPARepository.findByUserAndPost(user,post);
+        User host = userService.findUserByUsernameOrThrow(post.getUser().getUsername());
+        Optional<Reserve> reserve = reserveJPARepository.findByUserAndPost(participant,post);
 
         if (reserve.isPresent()) {
             reserveJPARepository.delete(reserve.get());
-            //TODO : 게시글 신청자수 감소 -> 구현 할지말지 정확X
+            post.removeParticipant(reserve.get());
             return ("신청 취소");
         }else {
-            Reserve newReserve = Reserve.builder().user(user).post(post).reservationDate(requestDto.reservationDate()).status(Status.PAYMENT).build();
+            if (post.getNumsOfParticipant() >= post.getMaxP() ){
+                throw new IllegalArgumentException("수강인원이 다 모집되어 신청할 수 없습니다.");
+            }
+            if (host.equals(participant)){
+                throw new IllegalArgumentException("본인이 작성한 프로그램은 신청할 수 없습니다.");
+            }
+            Reserve newReserve = Reserve.builder()
+                    .user(participant)
+                    .post(post)
+                    .postUserId(host.getId())
+                    .reservationDate(requestDto.reservationDate())
+                    .status(Status.PAYMENT)
+                    .myStatus(MyStatus.NOT_OPEN).build();
             reserveJPARepository.save(newReserve);
-            //TODO : 게시글 신청자수 증가 -> 구현 할지말지 정확X
+            post.addParticipant(newReserve);
             return ("신청 완료") ;
         }
     }
 
-
+    @Transactional
     public PageResponse<?, List<ReserveResponseDto>> get(String username, String filter, String cursor, Long cursorId) {
 
         User user = userService.findUserByUsernameOrThrow(username);
@@ -80,6 +96,7 @@ public class ReserveService {
                             .city(post.getCity())
                             .fee(post.getFee())
                             .status(reserve.getStatus())
+                            .myStatus(reserve.getMyStatus())
                             .startDate(post.getStartDate())
                             .reservationDate(reserve.getReservationDate())
                             .build()

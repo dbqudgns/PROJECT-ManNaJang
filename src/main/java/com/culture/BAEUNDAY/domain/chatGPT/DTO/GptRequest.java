@@ -1,4 +1,4 @@
-package com.culture.BAEUNDAY.domain.chatGPT;
+package com.culture.BAEUNDAY.domain.chatGPT.DTO;
 
 import com.culture.BAEUNDAY.domain.post.Province;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +13,6 @@ public class GptRequest {
 
             @NotBlank
             String subject,
-            String title,
             String goal,
             String syllabus,
             @NotNull
