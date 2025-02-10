@@ -146,10 +146,18 @@ public class Post {
     }
     public void addParticipant(Reserve reserve){
         this.reserves.add(reserve);
-        this.numsOfParticipant += 1;}
+        this.numsOfParticipant += 1;
+        if (this.numsOfParticipant == this.maxP && this.status == Status.AVAILABLE) {
+            this.status = Status.ING;
+        }
+    }
     public void removeParticipant(Reserve reserve){
         this.reserves.remove(reserve);
-        this.numsOfParticipant -= 1;}
+        this.numsOfParticipant -= 1;
+        if (this.numsOfParticipant < this.maxP && this.status == Status.ING) {
+            this.status = Status.AVAILABLE;
+        }
+    }
 
 
 }

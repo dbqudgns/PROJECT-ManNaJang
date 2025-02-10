@@ -1,5 +1,7 @@
 package com.culture.BAEUNDAY.domain.post;
 
+import com.culture.BAEUNDAY.domain.heart.Heart;
+import com.culture.BAEUNDAY.domain.heart.HeartJPARepository;
 import com.culture.BAEUNDAY.domain.post.DTO.PostRequest;
 import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
 import com.culture.BAEUNDAY.domain.user.User;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class PostService {
 
     private final PostJPARepository postJPARepository;
     private final UserRepository userRepository;
+    private final HeartJPARepository heartJPARepository;
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
     @Transactional
@@ -152,6 +156,21 @@ public class PostService {
         postJPARepository.delete(post);
     }
 
+    @Transactional
+    public PageResponse<?, PostResponse.FindByIdDTO> findById(Long postId, String user) {
+        Post post = getPostById(postId);
+        User visitor = getUserByName(user);
+        User writer = getUserByName(post.getUser().getName());
+        boolean isMine = false;
+        boolean isHearted = false;
+        if (visitor.equals(writer)) {isMine = true;} // 본인 글 체크
+        Optional<Heart> heart = heartJPARepository.findByUserAndPost(visitor, post);
+        if(heart.isPresent()) { isHearted = true ;}
+        PostResponse.FindByIdDTO findByIdDTO = new PostResponse.FindByIdDTO(post, writer, isMine, isHearted);
+        return new PageResponse<>( null, findByIdDTO);
+    }
+
+
     private <T extends Comparable<T>> PageResponse<T, PostResponse.FindAllDTO> createCursorPageResponse(Function<Post, T> cursorExtractor, List<Post> posts){
 
         //포스트 정보가 없을 경우
@@ -173,17 +192,6 @@ public class PostService {
         Long nextCursorId = lastPost.getId();
 
         return new PageResponse<>(new CursorResponse<>(hasNext, size, nextCursor, nextCursorId), findAllDTO);
-    }
-
-    @Transactional
-    public PageResponse<?, PostResponse.FindByIdDTO> findById(Long postId, String user) {
-        Post post = getPostById(postId);
-        User visitor = getUserByName(user);
-        User writer = getUserByName(post.getUser().getName());
-        boolean isMine = false;
-        if (visitor.equals(writer)) {isMine = true;} // 본인 글 체크
-        PostResponse.FindByIdDTO findByIdDTO = new PostResponse.FindByIdDTO(post, writer, isMine);
-        return new PageResponse<>( null, findByIdDTO);
     }
 
 
