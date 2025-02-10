@@ -114,7 +114,7 @@ public class PostResponse {
                 Long userId,
                 String name,
                 String profileImgURL,
-                Double manner
+                Integer manner
         ){
             public UserDTO(User user){
                 this(
