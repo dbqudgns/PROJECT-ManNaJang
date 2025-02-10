@@ -34,13 +34,18 @@ public class Reserve {
     @Column(nullable = false)
     private LocalDateTime reservationDate;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MyStatus myStatus;
+
 
     @Builder
-    public Reserve(Post post, User user, Status status, LocalDateTime reservationDate){
+    public Reserve(Post post, User user, Status status, LocalDateTime reservationDate, MyStatus myStatus){
         this.post = post;
         this.user = user;
         this.status = status;
         this.reservationDate = reservationDate;
+        this.myStatus = myStatus;
     }
 
 }
