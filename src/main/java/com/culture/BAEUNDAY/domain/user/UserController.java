@@ -1,7 +1,10 @@
 package com.culture.BAEUNDAY.domain.user;
 
+import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
 import com.culture.BAEUNDAY.domain.user.DTO.request.*;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
+import com.culture.BAEUNDAY.utils.ApiUtils;
+import com.culture.BAEUNDAY.utils.PageResponse;
 import com.culture.BAEUNDAY.utils.s3.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -94,8 +98,11 @@ public class UserController {
 
     @GetMapping("/profile/posts")
     @Operation(summary = "내가 작성한 글 조회")
-    public ResponseEntity<?> getPosts(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        return ResponseEntity.ok(userService.getPosts(customUserDetails));
+    public ResponseEntity<?> getPosts(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                     @RequestParam(value = "cursor", required = false) String cursor){
+            PageResponse<Long, List<PostResponse.PostDTO>> responseDTO = userService.getPosts(customUserDetails, cursor);
+
+        return ResponseEntity.ok(ApiUtils.success(responseDTO));
     }
 
     @PostMapping(value = "/profile/img/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

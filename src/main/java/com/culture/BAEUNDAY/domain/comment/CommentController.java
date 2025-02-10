@@ -3,6 +3,7 @@ package com.culture.BAEUNDAY.domain.comment;
 import com.culture.BAEUNDAY.domain.comment.DTO.request.CommentRequestDTO;
 import com.culture.BAEUNDAY.domain.comment.DTO.request.UpdateCommentRequestDTO;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
+import com.culture.BAEUNDAY.utils.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -30,8 +31,9 @@ public class CommentController {
             @RequestParam(required = false) Long cursorId,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
-        return ResponseEntity.ok(
-                commentService.getCommentsAndReplies(postId, cursor, cursorId, customUserDetails)
+
+        return ResponseEntity.ok(ApiUtils.success(
+                commentService.getCommentsAndReplies(postId, cursor, cursorId, customUserDetails))
         );
     }
 

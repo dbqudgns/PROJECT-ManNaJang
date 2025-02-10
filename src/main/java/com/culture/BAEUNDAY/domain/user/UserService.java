@@ -3,9 +3,14 @@ package com.culture.BAEUNDAY.domain.user;
 import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
 import com.culture.BAEUNDAY.domain.post.Post;
 import com.culture.BAEUNDAY.domain.post.PostJPARepository;
+import com.culture.BAEUNDAY.domain.review.DTO.response.ReviewResponseDTO;
+import com.culture.BAEUNDAY.domain.review.Review;
 import com.culture.BAEUNDAY.domain.user.DTO.response.*;
 import com.culture.BAEUNDAY.domain.user.DTO.request.RegisterRequestDTO;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
+import com.culture.BAEUNDAY.utils.CursorRequest;
+import com.culture.BAEUNDAY.utils.CursorResponse;
+import com.culture.BAEUNDAY.utils.PageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,14 +19,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PostJPARepository postRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
+
 
     private static final String DEFAULT_IMAGE_URL = "https://baeunday.s3.ap-northeast-2.amazonaws.com/%EC%82%AC%EC%9A%A9%EC%9E%90+%EA%B8%B0%EB%B3%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80.png";
 
@@ -164,20 +171,14 @@ public class UserService {
 
     }
 
-    public List<PostResponse.PostDTO> getPosts(CustomUserDetails customUserDetails ) {
+    public PageResponse<Long,  List<PostResponse.PostDTO>> getPosts(CustomUserDetails customUserDetails, String cursor) {
 
         User user = findUserByUsernameOrThrow(customUserDetails.getUsername());
 
-        List<Post> posts = postRepository.findByUser(user);
+        CursorRequest<Long> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Long.class, 0L);
+        List<Post> posts = userRepository.findByUserIdWithCursor(user.getId(), page.cursor, page.request);
 
-        List<PostResponse.PostDTO> postDTOList = new ArrayList<>();
-
-        for (Post post : posts) {
-            PostResponse.PostDTO postDTO = new PostResponse.PostDTO(post);
-            postDTOList.add(postDTO);
-        }
-
-        return postDTOList;
+        return createCursorPageResponse(Post::getId, posts);
     }
 
     public User findUserByUsernameOrThrow(String username) {
@@ -188,6 +189,33 @@ public class UserService {
         }
 
         return user;
+    }
+
+    private PageResponse<Long, List<PostResponse.PostDTO>> createCursorPageResponse(
+            Function<Post, Long> cursorExtractor,
+            List<Post> posts
+    ){
+        if (posts.isEmpty()) {
+            return new PageResponse<>(new CursorResponse<>(false, 0,null,null ),null);
+        }
+
+        int size = posts.size();
+        boolean hasNext = false;
+        if ( size == PAGE_SIZE_PLUS_ONE ){
+            posts.remove( size - 1) ;
+            size -= 1;
+            hasNext = true;
+        }
+        List<PostResponse.PostDTO> postList = new ArrayList<>();
+
+        for (Post post : posts) {
+            postList.add(new PostResponse.PostDTO(post));
+        }
+
+        Post lastPost = posts.get(size - 1) ;
+        Long nextCursor =  lastPost.getId();
+        return new PageResponse<>(new CursorResponse<>(hasNext, size, nextCursor, nextCursor), postList);
+
     }
 
 }
