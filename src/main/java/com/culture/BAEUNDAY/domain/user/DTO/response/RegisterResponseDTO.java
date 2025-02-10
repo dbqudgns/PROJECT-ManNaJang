@@ -8,7 +8,7 @@ public record RegisterResponseDTO(
         String name,
         String username,
         String profileImg,
-        Double manner
+        Integer manner
 ) {
 
 

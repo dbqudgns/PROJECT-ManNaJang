@@ -34,7 +34,7 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    private Double manner = 36.5;
+    private Integer manner = 1000;
 
     private String field;
 

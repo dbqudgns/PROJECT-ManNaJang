@@ -33,10 +33,9 @@ public class ReplyService {
         Comment ParentComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 대댓글을 찾을 수 없습니다."));
 
-        //댓글을 작성한 사람 또는 게시글을 작성한 사람만 대댓글을 작성 가능
-        if ((!Objects.equals(ParentComment.getUser().getName(), user.getName())) &&
-            (!Objects.equals(ParentComment.getPost().getUser().getName(), user.getName()))) {
-            throw new AccessDeniedException("댓글 작성자 또는 게시글 작성자만 대댓글을 작성할 수 있습니다.");
+        //게시글을 작성한 사람만 대댓글을 작성 가능
+        if (!Objects.equals(ParentComment.getPost().getUser().getName(), user.getName())) {
+            throw new AccessDeniedException("게시글 작성자만 대댓글을 작성할 수 있습니다.");
 
         }
 
