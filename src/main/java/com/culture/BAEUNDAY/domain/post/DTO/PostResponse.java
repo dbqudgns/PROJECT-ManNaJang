@@ -1,6 +1,7 @@
 package com.culture.BAEUNDAY.domain.post.DTO;
 
 import com.culture.BAEUNDAY.domain.post.Post;
+import com.culture.BAEUNDAY.domain.user.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,8 +50,9 @@ public class PostResponse {
 
     public record FindByIdDTO(
             Long id,
+            boolean isMyPost,
+            UserDTO user,
             String title,
-//            UserDTO user,
             String imgURL,
             String subject,
             String goal,
@@ -63,10 +65,11 @@ public class PostResponse {
             LocalDateTime endDate,
             String province,
             String city,
-
             String address,
             Integer minimumPeople,
             Integer maximumPeople,
+            Integer participants,
+            Integer hearts,
             String content,
             String status,
             LocalDateTime createdDate,
@@ -74,11 +77,12 @@ public class PostResponse {
 
     ){
         public FindByIdDTO(
-                Post post
-//                , User user
+                Post post, User user, boolean isMyPost
         ){
             this(
                     post.getId(),
+                    isMyPost,
+                    new UserDTO(user),
                     post.getTitle(),
                     post.getImgURL(),
                     post.getSubject(),
@@ -95,6 +99,8 @@ public class PostResponse {
                     post.getAddress(),
                     post.getMinP(),
                     post.getMaxP(),
+                    post.getNumsOfParticipant(),
+                    post.getNumsOfHeart(),
                     post.getContent(),
                     post.getStatus().toString(),
                     post.getCreatedDate(),
@@ -102,19 +108,21 @@ public class PostResponse {
             );
         }
 
-//        public record UserDTO(
-//                String name,
-//                String profileImgURL,
-//                String manner
-//        ){
-//            public UserDTO(User user){
-//                this(
-//                        user.getname(),
-//                        user.getimgURL(),
-//                        user.getmanner()
-//                );
-//            }
-//        }
+        public record UserDTO(
+                Long userId,
+                String name,
+                String profileImgURL,
+                Double manner
+        ){
+            public UserDTO(User user){
+                this(
+                        user.getId(),
+                        user.getName(),
+                        user.getProfileImg(),
+                        user.getManner()
+                );
+            }
+        }
 
     }
 }
