@@ -5,7 +5,7 @@ import com.culture.BAEUNDAY.domain.user.DTO.request.*;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
 import com.culture.BAEUNDAY.utils.ApiUtils;
 import com.culture.BAEUNDAY.utils.PageResponse;
-import com.culture.BAEUNDAY.utils.s3.ImageService;
+import com.culture.BAEUNDAY.utils.s3.UserImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +30,7 @@ public class UserController {
     private final UserService userService;
     private final LoginService loginService;
     private final LogoutService logoutService;
-    private final ImageService imageService;
+    private final UserImageService imageService;
 
     @PostMapping("/login")
     @Operation(summary = "로그인")

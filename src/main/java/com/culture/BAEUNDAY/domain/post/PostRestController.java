@@ -6,13 +6,17 @@ import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
 import com.culture.BAEUNDAY.utils.ApiUtils;
 import com.culture.BAEUNDAY.utils.PageResponse;
+
+import com.culture.BAEUNDAY.utils.s3.ForImageResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/posts")
@@ -43,23 +47,28 @@ public class PostRestController {
 
     }
     @Operation(summary = "프로그램 생성")
-    @PostMapping
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> create(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                    @RequestBody @Valid PostRequest.PostRequestDto request
+                                    @RequestPart(value = "image") MultipartFile image,
+                                    @RequestPart(value = "info") @Valid PostRequest.PostRequestDto request
     ){
-        postService.create(userDetails.getUsername(), request);
-        return ResponseEntity.ok().body(ApiUtils.success("프로그램 생성 완료"));
+        ForImageResponseDTO responseDTO = postService.create(userDetails.getUsername(), image, request);
+        return ResponseEntity.ok(ApiUtils.success(responseDTO));
     }
 
     @Operation(summary = "프로그램 수정")
-    @PutMapping("/{postId}")
+    @PutMapping(value = "/{postId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> update(@AuthenticationPrincipal CustomUserDetails userDetails,
                                     @PathVariable(name = "postId") Long postId,
-                                    @RequestBody PostRequest.PostRequestDto request
+                                    @RequestParam(value = "imageAddress", required = false) String imageAddress,
+                                    @RequestPart(value = "image", required = false) MultipartFile image,
+                                    @RequestPart(value = "info") PostRequest.PostRequestDto request
     ){
-        postService.update(userDetails.getUsername(), postId, request);
-        return ResponseEntity.ok().body(ApiUtils.success("프로그램 수정 완료"));
+        ForImageResponseDTO responseDTO = postService.update(userDetails.getUsername(), postId, imageAddress, image, request);
+        return ResponseEntity.ok(ApiUtils.success(responseDTO));
     }
+
+
     @Operation(summary = "프로그램 삭제")
     @DeleteMapping("/{postId}")
     public ResponseEntity<?> delete(@AuthenticationPrincipal CustomUserDetails userDetails,
