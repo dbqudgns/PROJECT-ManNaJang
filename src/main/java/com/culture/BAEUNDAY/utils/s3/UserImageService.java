@@ -28,9 +28,9 @@ public class UserImageService {
     private final AmazonS3 amazonS3;
     private final UserService userService;
 
-    private static final String DEFAULT_IMAGE_URL = "https://baeunday.s3.ap-northeast-2.amazonaws.com/%EC%82%AC%EC%9A%A9%EC%9E%90+%EA%B8%B0%EB%B3%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80.png";
+    private static final String DEFAULT_IMAGE_URL = "https://rootimpact11-user.s3.ap-northeast-2.amazonaws.com/defaultImage.png";
 
-    @Value("${cloud.aws.s3.bucket}")
+    @Value("${cloud.aws.s3.bucket-user}")
     private String bucket;
 
     public ImageResponseDTO uploadImg(CustomUserDetails customUserDetails, String imageAddress, MultipartFile image) {

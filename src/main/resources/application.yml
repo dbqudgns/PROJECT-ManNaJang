@@ -35,7 +35,8 @@ cloud:
     region:
       static: ap-northeast-2
     s3:
-      bucket: baeunday
+      bucket-user: rootimpact11-user
+      bucket-post: rootimpact11-post
     stack:
       auto: false
 

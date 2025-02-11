@@ -27,7 +27,7 @@ public class PostImageService {
 
     private final AmazonS3 amazonS3;
 
-    @Value("${cloud.aws.s3.bucket}")
+    @Value("${cloud.aws.s3.bucket-post}")
     private String bucket;
 
     public ForImageResponseDTO uploadImg(MultipartFile image) {
@@ -48,14 +48,13 @@ public class PostImageService {
 
         //수정할 이미지가 없다면 기존 게시글 이미지 경로명 반환
         if(image == null || image.isEmpty() || image.getOriginalFilename() == null) {
-            System.out.println("=====진행====");
             return ForImageResponseDTO.builder()
                     .postImg(post.getImgURL())
                     .build();
         }
 
         //삭제할 게시글 이미지 경로명이 없을 경우 예외 던짐
-        if (beforeImageAddress == null || !beforeImageAddress.equals(image.getOriginalFilename())) {
+        if (beforeImageAddress == null) {
             throw new IllegalArgumentException("삭제할 게시글 이미지 경로명이 없습니다.");
         }
 
@@ -131,14 +130,21 @@ public class PostImageService {
 
         String key = getKeyFromImageAddress(beforeImageAddress);
 
+
         try {
+
+            // 객체가 존재하는지 확인
+            if (!amazonS3.doesObjectExist(bucket, key)) {
+                System.out.println("===실행");
+                throw new IllegalArgumentException("S3 저장소에서 삭제할 이미지가 존재하지 않습니다.");
+            }
 
             amazonS3.deleteObject(new DeleteObjectRequest(bucket, key));
 
+        } catch (IllegalArgumentException e) {
+            throw e;
         } catch (Exception e) {
-
             throw new AmazonS3Exception("저장소에 이미지를 삭제하는데 실패하였습니다.");
-
         }
 
     }

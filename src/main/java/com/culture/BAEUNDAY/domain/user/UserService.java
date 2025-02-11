@@ -30,7 +30,7 @@ public class UserService {
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
 
-    private static final String DEFAULT_IMAGE_URL = "https://baeunday.s3.ap-northeast-2.amazonaws.com/%EC%82%AC%EC%9A%A9%EC%9E%90+%EA%B8%B0%EB%B3%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80.png";
+    private static final String DEFAULT_IMAGE_URL = "https://rootimpact11-user.s3.ap-northeast-2.amazonaws.com/defaultImage.png";
 
 
     @Transactional

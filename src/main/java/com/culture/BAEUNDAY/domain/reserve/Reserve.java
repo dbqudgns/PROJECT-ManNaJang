@@ -28,25 +28,21 @@ public class Reserve {
     private User user;
 
     @Column(nullable = false)
-    private Long postUserId;
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = false)
+    @Column(name = "reservation_date", nullable = false)
     private LocalDateTime reservationDate;
 
-    @Column(nullable = false)
+    @Column(name = "my_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private MyStatus myStatus;
 
 
     @Builder
-    public Reserve(Post post, User user, Long postUserId, Status status, LocalDateTime reservationDate, MyStatus myStatus){
+    public Reserve(Post post, User user, Status status, LocalDateTime reservationDate, MyStatus myStatus){
         this.post = post;
         this.user = user;
-        this.postUserId = postUserId;
         this.status = status;
         this.reservationDate = reservationDate;
         this.myStatus = myStatus;
