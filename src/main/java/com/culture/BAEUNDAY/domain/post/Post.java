@@ -102,9 +102,11 @@ public class Post {
     @Column(name = "nums_of_participant", nullable = false)
     private Integer numsOfParticipant;
 
+    @Builder.Default
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Heart> hearts = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Reserve> reserves = new ArrayList<>();
 
