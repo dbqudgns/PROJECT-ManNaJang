@@ -30,11 +30,11 @@ public class PostRestController {
     @GetMapping
     public ResponseEntity<?> findAllPost(@RequestParam(value = "sort", defaultValue = "id") String sort,
                                          @RequestParam(value = "status", required = false) Status status,
-                                         @RequestParam(value = "fee", required = false) Fee fee,
+                                         @RequestParam(value = "feeRange", required = false) FeeRange feeRange,
                                          @RequestParam(value = "cursor", required = false) String cursor,
                                          @RequestParam(value = "cursorId", required = false) Long cursorId ) {
 
-        PageResponse<?, PostResponse.FindAllDTO> responseDTO = postService.findAll(sort,status,fee,cursor,cursorId);
+        PageResponse<?, PostResponse.FindAllDTO> responseDTO = postService.findAll(sort,status, feeRange,cursor,cursorId);
         return ResponseEntity.ok(ApiUtils.success(responseDTO));
     }
 

@@ -1,6 +1,6 @@
 package com.culture.BAEUNDAY.domain.post;
 
-public enum Fee {
+public enum FeeRange {
 
     FREE(0,0),
     UNDER_3(0,29999),
@@ -11,7 +11,7 @@ public enum Fee {
     private Integer min;
     private Integer max;
 
-    Fee(int i, int i1) {
+    FeeRange(int i, int i1) {
     }
 
     public Integer getMin(){ return min; }

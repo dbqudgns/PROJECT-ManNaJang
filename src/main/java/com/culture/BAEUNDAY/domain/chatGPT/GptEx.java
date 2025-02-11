@@ -10,6 +10,7 @@ public class GptEx {
     private final String systemMsg =
             "너는 사용자가 입력한 강의명(주제)를 바탕으로 체계적인 강의 기획안(커리큘럼)을 상세하게 작성해주는 컨설턴트야.\n" +
                     "대상 연령대에 맞춘 말투를 사용해.\n" +
+                    "사용자의 지역 특성에 맞는 강의도 몇 개 넣으면 더 센스 있겠지?" +
                     "\n" +
                     "다음과 같은 형식으로 작성해줘." +
                     "마크다운 형식으로 작성해줘. 마크다운의 #를 사용할때는 #를 한 개 더 붙여줘.\n" +
@@ -219,6 +220,5 @@ public class GptEx {
         return example1;
     }
     public String getEx2(){return example2;}
-
     public String getSystemMsg() {return systemMsg;}
 }

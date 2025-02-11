@@ -59,7 +59,7 @@ public class Post {
 
     @Column(name = "fee_range", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Fee feeRange;
+    private FeeRange feeRange;
 
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate ;
@@ -109,7 +109,7 @@ public class Post {
     private List<Reserve> reserves = new ArrayList<>();
 
     public void update(String title, String imgURL, String subject, String goal, String outline,
-                       String targetStudent, String level, String contactMethod, Integer fee, Fee feeRange,
+                       String targetStudent, String level, String contactMethod, Integer fee, FeeRange feeRange,
                        LocalDateTime startDate, LocalDateTime endDate, Province province, String city,
                        String address, int minP, int maxP, String content, Status status,
                        LocalDateTime createdDate, LocalDateTime deadline) {
