@@ -2,12 +2,17 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/baeunday_app?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: root
-    password: dbqudgns24
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+
+   # driver-class-name: com.mysql.cj.jdbc.Driver
+   # url: jdbc:mysql://localhost:3306/baeunday_app?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+   # username: root
+   # password: dbqudgns24
 
   jwt:
-    secret: fnxmdlavorxmzjarhdtkdldpvldjskswjswjdxhddlfemdrkwmdkaaaaaaaaaaaaa
+    secret: ${JWT_KEY}
 
   jpa:
     properties:
@@ -25,6 +30,8 @@ spring:
       max-file-size: 10MB  # 업로드할 수 있는 개별 파일의 최대 크기. 기본 1MB
       max-request-size: 10MB # multipart/form-data 요청의 최대 허용 크기. 기본 10MB
 
+openai :
+  key : ${CHATGPT_KEY}
 
 # AWS S3
 cloud:

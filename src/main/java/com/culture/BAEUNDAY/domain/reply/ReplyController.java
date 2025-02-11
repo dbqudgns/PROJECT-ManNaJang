@@ -2,7 +2,6 @@ package com.culture.BAEUNDAY.domain.reply;
 
 import com.culture.BAEUNDAY.domain.reply.DTO.request.ReplyRequestDTO;
 import com.culture.BAEUNDAY.domain.reply.DTO.request.UpdateReplyRequestDTO;
-import com.culture.BAEUNDAY.domain.user.UserService;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,12 +9,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 
-@Controller
+@RestController
 @RequestMapping("/reply")
 @RequiredArgsConstructor
 @Tag(name = "대댓글 api", description = "대댓글 CRUD")
