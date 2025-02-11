@@ -49,7 +49,6 @@ public class ReserveService {
             Reserve newReserve = Reserve.builder()
                     .user(participant)
                     .post(post)
-                    .postUserId(host.getId())
                     .reservationDate(requestDto.reservationDate())
                     .status(Status.PAYMENT)
                     .myStatus(MyStatus.NOT_OPEN).build();

@@ -1,14 +1,12 @@
 package com.culture.BAEUNDAY.domain.refresh;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "refresh_tb")
 public class Refresh {
 
     @Id
