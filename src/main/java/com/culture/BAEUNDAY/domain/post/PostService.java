@@ -10,7 +10,6 @@ import com.culture.BAEUNDAY.utils.CursorRequest;
 import com.culture.BAEUNDAY.utils.CursorResponse;
 import com.culture.BAEUNDAY.utils.PageResponse;
 import com.culture.BAEUNDAY.utils.s3.ForImageResponseDTO;
-import com.culture.BAEUNDAY.utils.s3.ImageResponseDTO;
 import com.culture.BAEUNDAY.utils.s3.PostImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,52 +31,28 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostImageService postImageService;
     private final HeartJPARepository heartJPARepository;
+    private final PostCustomRepositoryImpl postCustomRepository;
 
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
     @Transactional
-    public PageResponse<? extends Comparable<?> , PostResponse.FindAllDTO> findAll(String sort, Status status, Fee fee, String cursor, Long cursorId) {
+    public PageResponse<? extends Comparable<?> , PostResponse.FindAllDTO> findAll(String sort, Status status, FeeRange feeRange, String cursor, Long cursorId) {
         List<Post> posts;
-
         switch( sort ) {
             case "id" -> {
                 CursorRequest<Long> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Long.class, cursorId );
-                if (status != null && fee != null ){
-                    posts = postJPARepository.findAllByIdAndStatusAndFeeLessThanCursor(page.cursor, status, fee, page.request);
-                } else if ( status == null && fee != null ) {
-                    posts = postJPARepository.findAllByIdAndFeeLessThanCursor(page.cursor, fee, page.request);
-                } else if (fee == null && status != null) {
-                    posts = postJPARepository.findAllByIdAndStatusLessThanCursor(page.cursor, status, page.request);
-                } else {
-                    posts = postJPARepository.findAllByIdLessThanCursor(page.cursor, page.request);
-                }
+                posts = postCustomRepository.findAllById(page.cursor, page.cursorID, status, feeRange, page.request);
                 return createCursorPageResponse(Post::getId, posts);
             }
             case "heart" -> {
                 CursorRequest<Integer> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Integer.class, cursorId );
-                if (status != null && fee != null ){
-                    posts = postJPARepository.findAllByHeartAndStatusAndFeeLessThanCursor(page.cursor, page.cursorID, status, fee, page.request);
-                } else if ( status == null && fee != null ) {
-                    posts = postJPARepository.findAllByHeartAndFeeLessThanCursor(page.cursor, page.cursorID,fee, page.request);
-                } else if (fee == null && status != null) {
-                    posts = postJPARepository.findAllByHeartAndStatusLessThanCursor(page.cursor, page.cursorID,status, page.request);
-                } else {
-                    posts = postJPARepository.findAllByHeartLessThanCursor(page.cursor, page.cursorID, page.request);
-                }
+                posts = postCustomRepository.findAllByHeart(page.cursor, page.cursorID, status, feeRange, page.request);
                 return createCursorPageResponse(Post::getNumsOfHeart, posts);
             }
             case "recent" -> {
                 CursorRequest<LocalDateTime> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, LocalDateTime.class, cursorId );
-                if (status != null && fee != null ){
-                    posts = postJPARepository.findAllByDateAndStatusAndFeeLessThanCursor(page.cursor, page.cursorID, status, fee, page.request);
-                } else if ( status == null && fee != null ) {
-                    posts = postJPARepository.findAllByDateAndFeeLessThanCursor(page.cursor, page.cursorID,fee, page.request);
-                } else if (fee == null && status != null) {
-                    posts = postJPARepository.findAllByDateAndStatusLessThanCursor(page.cursor, page.cursorID,status, page.request);
-                } else {
-                    posts = postJPARepository.findAllByDateLessThanCursor( page.cursor, page.cursorID, page.request);
-                }
-                return createCursorPageResponse(Post::getCreatedDate, posts);
+                posts = postCustomRepository.findAllByDateTime(page.cursor, page.cursorID, status, feeRange, page.request);
+                return createCursorPageResponse(Post::getDeadline, posts);
             }
             default -> throw new IllegalArgumentException();
         }
@@ -86,7 +61,7 @@ public class PostService {
     @Transactional
     public ForImageResponseDTO create(String username, MultipartFile image, PostRequest.PostRequestDto request) {
         User user = getUserByName(username);
-        Fee feeRange = getFeeRange(request.fee());
+        FeeRange feeRange = getFeeRange(request.fee());
 
         ForImageResponseDTO forImageResponseDTO = postImageService.uploadImg(image);
 
@@ -129,7 +104,7 @@ public class PostService {
         if (!Objects.equals(user.getName(), post.getUser().getName())) {
             throw new IllegalArgumentException("해당 사용자가 작성한 게시글이 아닙니다.");
         }
-        Fee feeRange = getFeeRange(request.fee());
+        FeeRange feeRange = getFeeRange(request.fee());
 
         ForImageResponseDTO forImageResponseDTO = postImageService.updateImg(post, beforeImageAddress, image);
 
@@ -168,7 +143,6 @@ public class PostService {
         if (!Objects.equals(user.getName(), post.getUser().getName())) {
             throw new IllegalArgumentException("해당 사용자가 작성한 게시글이 아닙니다.");
         }
-
         postImageService.deleteImg(post.getImgURL()); //s3에 저장된 게시글 이미지 부터 삭제
         postJPARepository.delete(post);
     }
@@ -194,7 +168,6 @@ public class PostService {
         if (posts.isEmpty()) {
             return new PageResponse<>(new CursorResponse<>(false,0, null, null), null);
         }
-
         int size = posts.size();
         boolean hasNext = false;
         if (size == PAGE_SIZE_PLUS_ONE) { //6개라면, 5개만 전송하고 hasNext를 true로 설정
@@ -202,7 +175,6 @@ public class PostService {
             size -= 1;
             hasNext = true;
         }
-
         PostResponse.FindAllDTO findAllDTO = PostResponse.FindAllDTO.of(posts);
         Post lastPost = posts.get(size - 1) ;
         T nextCursor = cursorExtractor.apply(lastPost);
@@ -227,13 +199,13 @@ public class PostService {
         }
     }
 
-    private Fee getFeeRange(int fee) {
-        Fee feeRange;
-        if (fee == 0) { feeRange = Fee.FREE ;}
-        else if ( fee < 30000 ) { feeRange = Fee.UNDER_3 ;}
-        else if ( fee < 50000 ) { feeRange = Fee.BETWEEN3_5; }
-        else if ( fee < 100000 ) { feeRange = Fee.BETWEEN5_10 ; }
-        else { feeRange = Fee.OVER_10 ;  }
+    private FeeRange getFeeRange(int fee) {
+        FeeRange feeRange;
+        if (fee == 0) { feeRange = FeeRange.FREE ;}
+        else if ( fee < 30000 ) { feeRange = FeeRange.UNDER_3 ;}
+        else if ( fee < 50000 ) { feeRange = FeeRange.BETWEEN3_5; }
+        else if ( fee < 100000 ) { feeRange = FeeRange.BETWEEN5_10 ; }
+        else { feeRange = FeeRange.OVER_10 ;  }
         return feeRange;
     }
 
