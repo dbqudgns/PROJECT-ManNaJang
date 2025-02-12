@@ -70,7 +70,7 @@ VALUES
 
 
 
-INSERT INTO comment_tb(post_id, user_id, field, created_date)
+INSERT INTO comment_tb(post_id, user_id, field, createdDate)
 VALUES
     (1, 1, '첫 번째 댓글', '2025-02-07 18:00:00'),
     (1, 2, '두 번째 댓글', '2025-02-07 18:01:00'),

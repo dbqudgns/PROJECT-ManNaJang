@@ -1,5 +1,6 @@
 package com.culture.BAEUNDAY.domain.chatGPT;
 
+import com.culture.BAEUNDAY.config.GptConfig;
 import com.culture.BAEUNDAY.domain.chatGPT.DTO.GptRequest;
 import com.culture.BAEUNDAY.domain.chatGPT.DTO.GptResponse;
 import com.culture.BAEUNDAY.utils.PageResponse;
@@ -10,8 +11,12 @@ import com.openai.models.ChatCompletionAssistantMessageParam;
 import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,16 +25,22 @@ import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
-@Service
 @Slf4j
 @Tag(name = "GPT api", description = "기획안 생성 기능")
+@Service
 public class GptService {
 //https://platform.openai.com/playground/chat?models=gpt-4o
     private final GptEx gptEx;
-    private final String openAiKey = "";
-    private final OpenAIClient client = OpenAIOkHttpClient.builder()
-            .apiKey(openAiKey)
+
+    private final String openAiKey;
+    private OpenAIClient client;
+
+    @PostConstruct
+    public void init() {
+        this.client = OpenAIOkHttpClient.builder()
+                .apiKey(openAiKey)
                 .build();
+    }
 
     public PageResponse<?, GptResponse.GptResponseDto> run(GptRequest.GptRequestDto requestDto) {
 
