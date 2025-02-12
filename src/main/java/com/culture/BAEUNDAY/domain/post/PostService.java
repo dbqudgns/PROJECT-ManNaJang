@@ -36,22 +36,22 @@ public class PostService {
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
     @Transactional
-    public PageResponse<? extends Comparable<?> , PostResponse.FindAllDTO> findAll(String sort, Status status, FeeRange feeRange, String cursor, Long cursorId) {
+    public PageResponse<? extends Comparable<?> , PostResponse.FindAllDTO> findAll(String sort, Status status, FeeRange feeRange, Province province, String city, String cursor, Long cursorId) {
         List<Post> posts;
         switch( sort ) {
             case "id" -> {
                 CursorRequest<Long> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Long.class, cursorId );
-                posts = postCustomRepository.findAllById(page.cursor, page.cursorID, status, feeRange, page.request);
+                posts = postCustomRepository.findAllById(page.cursor, page.cursorID, status, feeRange, province, city, page.request);
                 return createCursorPageResponse(Post::getId, posts);
             }
             case "heart" -> {
                 CursorRequest<Integer> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Integer.class, cursorId );
-                posts = postCustomRepository.findAllByHeart(page.cursor, page.cursorID, status, feeRange, page.request);
+                posts = postCustomRepository.findAllByHeart(page.cursor, page.cursorID, status, feeRange, province, city, page.request);
                 return createCursorPageResponse(Post::getNumsOfHeart, posts);
             }
             case "recent" -> {
                 CursorRequest<LocalDateTime> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, LocalDateTime.class, cursorId );
-                posts = postCustomRepository.findAllByDateTime(page.cursor, page.cursorID, status, feeRange, page.request);
+                posts = postCustomRepository.findAllByDateTime(page.cursor, page.cursorID, status, feeRange, province, city, page.request);
                 return createCursorPageResponse(Post::getDeadline, posts);
             }
             default -> throw new IllegalArgumentException();

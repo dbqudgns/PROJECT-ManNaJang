@@ -22,12 +22,14 @@ public class PostCustomRepositoryImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
-    public List<Post> findAllById(Long cursor, Long cursorId, Status status, FeeRange feeRange, Pageable pageable) {
+    public List<Post> findAllById(Long cursor, Long cursorId, Status status, FeeRange feeRange, Province province, String city,  Pageable pageable) {
         JPQLQuery<Post> query = jpaQueryFactory
                 .selectFrom(post)
                 .where(
                         eqStatus(status),
                         eqFee(feeRange),
+                        eqProvince(province),
+                        eqCity(city),
                         eqCursorForId(cursor)
                 )
                 .orderBy(post.id.desc())
@@ -35,25 +37,25 @@ public class PostCustomRepositoryImpl extends QuerydslRepositorySupport implemen
         return query.fetch();
     }
     @Override
-    public List<Post> findAllByHeart(Integer cursor, Long cursorId, Status status, FeeRange feeRange, Pageable pageable) {
+    public List<Post> findAllByHeart(Integer cursor, Long cursorId, Status status, FeeRange feeRange,Province province, String city, Pageable pageable) {
 
         JPQLQuery<Post> query = jpaQueryFactory
                 .selectFrom(post)
                 .where(
-                        eqCursorForHeart(cursor).and(eqStatus(status)).and(eqFee(feeRange))
-                        .or(eqCursorIdForHeart(cursor,cursorId)).and(eqStatus(status)).and(eqFee(feeRange))
+                        eqCursorForHeart(cursor).and(eqStatus(status)).and(eqFee(feeRange)).and(eqProvince(province)).and(eqCity(city))
+                        .or(eqCursorIdForHeart(cursor,cursorId)).and(eqStatus(status)).and(eqFee(feeRange)).and(eqProvince(province)).and(eqCity(city))
                 )
                 .orderBy(post.numsOfHeart.desc(),post.id.desc())
                 .limit(pageable.getPageSize());
         return query.fetch();
     }
     @Override
-    public List<Post> findAllByDateTime(LocalDateTime cursor, Long cursorId, Status status, FeeRange feeRange, Pageable pageable) {
+    public List<Post> findAllByDateTime(LocalDateTime cursor, Long cursorId, Status status, FeeRange feeRange,Province province, String city, Pageable pageable) {
         JPQLQuery<Post> query = jpaQueryFactory
                 .selectFrom(post)
                 .where(
-                        eqCursorForRecent(cursor).and(eqStatus(status)).and(eqFee(feeRange))
-                        .or(eqCursorIdForRecent(cursor,cursorId)).and(eqStatus(status)).and(eqFee(feeRange))
+                        eqCursorForRecent(cursor).and(eqStatus(status)).and(eqFee(feeRange)).and(eqProvince(province)).and(eqCity(city))
+                        .or(eqCursorIdForRecent(cursor,cursorId)).and(eqStatus(status)).and(eqFee(feeRange)).and(eqProvince(province)).and(eqCity(city))
                 )
                 .orderBy(post.deadline.desc(),post.id.desc())
                 .limit(pageable.getPageSize());
@@ -67,6 +69,16 @@ public class PostCustomRepositoryImpl extends QuerydslRepositorySupport implemen
     private BooleanExpression eqFee(FeeRange feeRange){
         if ( feeRange == null  ) {return null;}
         return post.feeRange.eq(feeRange);
+    }
+
+    private BooleanExpression eqProvince(Province province){
+        if( province == Province.전국 ) { return null;}
+        return post.province.eq(province);
+    }
+    private BooleanExpression eqCity(String city){
+        if ( city == null) { return null; }
+        return post.city.eq(city);
+
     }
 
     private BooleanExpression eqCursorForId(Long cursor){
