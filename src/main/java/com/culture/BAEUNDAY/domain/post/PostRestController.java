@@ -6,7 +6,6 @@ import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
 import com.culture.BAEUNDAY.utils.ApiUtils;
 import com.culture.BAEUNDAY.utils.PageResponse;
-
 import com.culture.BAEUNDAY.utils.s3.ForImageResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,10 +30,11 @@ public class PostRestController {
     public ResponseEntity<?> findAllPost(@RequestParam(value = "sort", defaultValue = "id") String sort,
                                          @RequestParam(value = "status", required = false) Status status,
                                          @RequestParam(value = "feeRange", required = false) FeeRange feeRange,
+                                         @RequestParam(value = "province", required = false) Province province,
+                                         @RequestParam(value = "city", required = false)  String city,
                                          @RequestParam(value = "cursor", required = false) String cursor,
                                          @RequestParam(value = "cursorId", required = false) Long cursorId ) {
-
-        PageResponse<?, PostResponse.FindAllDTO> responseDTO = postService.findAll(sort,status, feeRange,cursor,cursorId);
+        PageResponse<?, PostResponse.FindAllDTO> responseDTO = postService.findAll(sort,status, feeRange, province, city, cursor,cursorId);
         return ResponseEntity.ok(ApiUtils.success(responseDTO));
     }
 
