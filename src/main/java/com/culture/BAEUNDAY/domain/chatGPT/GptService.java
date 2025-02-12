@@ -100,8 +100,8 @@ public class GptService {
 
     private StringBuilder makeUserMessage(GptRequest.GptRequestDto requestDto) {
         HashMap<String,String> programInfo = new LinkedHashMap<>();
-        programInfo.put("내가 진행할 프로그램에 대한 기본적인 정보를 줄테니까 강의기획서를 작성해줘"," ");
-        programInfo.put("특히 커리큘럼은 " + requestDto.numberOfProgram()+ "회차로 나눠서 각각의 세부 내용들을 적어줘."," ");
+        programInfo.put("내가 진행할 원데이 프로그램에 대한 기본적인 정보를 줄테니까 강의기획서를 작성해줘"," ");
+        programInfo.put("특히 커리큘럼은 " + requestDto.programTime()+ "부로 나눠서 각각의 세부 내용들을 적어줘."," ");
         programInfo.put("주제 : ", requestDto.subject());
         programInfo.put("목표 ", requestDto.goal());
         programInfo.put("개요", requestDto.syllabus());
@@ -111,7 +111,7 @@ public class GptService {
         programInfo.put("강의 형태", requestDto.method());
         programInfo.put("강의 비용", requestDto.fee().toString());
         programInfo.put("시작일", requestDto.startDate().toString());
-        programInfo.put("강의 횟수", requestDto.numberOfProgram().toString());
+        programInfo.put("강의 시간", requestDto.programTime().toString());
         programInfo.put("지역", requestDto.province().toString() + requestDto.city()) ; //TODO : address 추가
         programInfo.put("최소 인원", requestDto.minP().toString());
         programInfo.put("최대 인원", requestDto.maxP().toString());

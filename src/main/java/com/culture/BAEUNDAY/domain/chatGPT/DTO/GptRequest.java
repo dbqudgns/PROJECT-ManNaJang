@@ -26,7 +26,7 @@ public class GptRequest {
             @NotNull
             LocalDate startDate,
             @NotNull
-            Integer numberOfProgram,
+            Integer programTime,
             @NotNull
             Province province,
             @NotBlank
