@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=transparent&text=모이장&fontColor=C71C38)
+![header](https://capsule-render.vercel.app/api?type=transparent&text=모이장&fontColor=FFFFFF)
 
 ### ✍프로젝트 소개
 #### [모이장] 
