@@ -1,44 +1,24 @@
 package com.culture.BAEUNDAY.domain.chatGPT.DTO;
 
-import com.culture.BAEUNDAY.domain.post.Province;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDate;
-import java.util.List;
 
 public class GptRequest {
 
     public record GptRequestDto(
-
-            @NotBlank
-            String subject,
-            String goal,
-            String syllabus,
             @NotNull
-            List<String> targetStudents,
-            @NotBlank
-            String level,
-            @NotBlank
-            String method,
+            String question1,
             @NotNull
-            Integer fee,
+            String question2,
             @NotNull
-            LocalDate startDate,
+            String question3,
             @NotNull
-            Integer programTime,
+            String question4,
             @NotNull
-            Province province,
-            @NotBlank
-            String city,
-            String address,
+            String question5,
             @NotNull
-            Integer minP,
+            String question6,
             @NotNull
-            Integer maxP,
-            String etc
-
+            String question7
     ){
-
     }
 }

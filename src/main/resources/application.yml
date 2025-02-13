@@ -49,12 +49,14 @@ cloud:
 
 #H2
 #spring:
+#  jwt:
+#    secret: ${JWT_KEY}
 #  sql:
 #    init:
 #      mode: always
 #      platform: h2
 #      username: sa
-#      data-locations: classpath*:db/data.sql
+##      data-locations: classpath*:db/data.sql
 #
 #  h2:
 #    console:

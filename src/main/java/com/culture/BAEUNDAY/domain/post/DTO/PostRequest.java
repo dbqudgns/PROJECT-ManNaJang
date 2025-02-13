@@ -13,26 +13,14 @@ public class PostRequest {
 
             @NotBlank(message = "제목은 필수 입력입니다")
             String title,
-            @NotBlank
-            String subject,
-            @NotBlank
-
-            String goal,
-            @NotBlank
-            String outline,
-            @NotBlank
-            String targetStudent,
-            @NotBlank
-            String level,
-            @NotBlank
-            String contactMethod,
+            @NotNull
+            LocalDateTime startDateTime,
+            @NotNull
+            LocalDateTime endDateTime,
+            @NotNull
+            LocalDateTime deadline,
             @NotNull
             Integer fee,
-
-            @NotNull
-            LocalDateTime startDate,
-            @NotNull
-            LocalDateTime endDate,
             @NotNull
             Province province,
             @NotBlank
@@ -48,11 +36,6 @@ public class PostRequest {
             @NotNull
             Status status,
             @NotNull
-            LocalDateTime createdDate,
-            @NotNull
-            LocalDateTime deadline
-
+            LocalDateTime createdDate
     ){}
-
-
 }

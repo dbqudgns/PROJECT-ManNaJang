@@ -26,29 +26,23 @@ public class QPost extends EntityPathBase<Post> {
 
     public final StringPath city = createString("city");
 
-    public final StringPath contactMethod = createString("contactMethod");
-
     public final StringPath content = createString("content");
 
     public final DateTimePath<java.time.LocalDateTime> createdDate = createDateTime("createdDate", java.time.LocalDateTime.class);
 
     public final DateTimePath<java.time.LocalDateTime> deadline = createDateTime("deadline", java.time.LocalDateTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> endDate = createDateTime("endDate", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> endDateTime = createDateTime("endDateTime", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> fee = createNumber("fee", Integer.class);
 
     public final EnumPath<FeeRange> feeRange = createEnum("feeRange", FeeRange.class);
-
-    public final StringPath goal = createString("goal");
 
     public final ListPath<com.culture.BAEUNDAY.domain.heart.Heart, com.culture.BAEUNDAY.domain.heart.QHeart> hearts = this.<com.culture.BAEUNDAY.domain.heart.Heart, com.culture.BAEUNDAY.domain.heart.QHeart>createList("hearts", com.culture.BAEUNDAY.domain.heart.Heart.class, com.culture.BAEUNDAY.domain.heart.QHeart.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath imgURL = createString("imgURL");
-
-    public final StringPath level = createString("level");
 
     public final NumberPath<Integer> maxP = createNumber("maxP", Integer.class);
 
@@ -58,19 +52,13 @@ public class QPost extends EntityPathBase<Post> {
 
     public final NumberPath<Integer> numsOfParticipant = createNumber("numsOfParticipant", Integer.class);
 
-    public final StringPath outline = createString("outline");
-
     public final EnumPath<Province> province = createEnum("province", Province.class);
 
     public final ListPath<com.culture.BAEUNDAY.domain.reserve.Reserve, com.culture.BAEUNDAY.domain.reserve.QReserve> reserves = this.<com.culture.BAEUNDAY.domain.reserve.Reserve, com.culture.BAEUNDAY.domain.reserve.QReserve>createList("reserves", com.culture.BAEUNDAY.domain.reserve.Reserve.class, com.culture.BAEUNDAY.domain.reserve.QReserve.class, PathInits.DIRECT2);
 
-    public final DateTimePath<java.time.LocalDateTime> startDate = createDateTime("startDate", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> startDateTime = createDateTime("startDateTime", java.time.LocalDateTime.class);
 
     public final EnumPath<Status> status = createEnum("status", Status.class);
-
-    public final StringPath subject = createString("subject");
-
-    public final StringPath targetStudent = createString("targetStudent");
 
     public final StringPath title = createString("title");
 
