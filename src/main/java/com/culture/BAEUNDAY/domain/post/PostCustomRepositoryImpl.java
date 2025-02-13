@@ -72,9 +72,10 @@ public class PostCustomRepositoryImpl extends QuerydslRepositorySupport implemen
     }
 
     private BooleanExpression eqProvince(Province province){
-        if( province == Province.전국 ) { return null;}
+        if(province == Province.전국) { return null;}
         return post.province.eq(province);
     }
+
     private BooleanExpression eqCity(String city){
         if ( city == null) { return null; }
         return post.city.eq(city);
