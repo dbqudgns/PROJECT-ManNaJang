@@ -71,30 +71,24 @@ public class PostService {
         ForImageResponseDTO forImageResponseDTO = postImageService.uploadImg(image);
 
         Post post = Post.builder()
+                .user(user)
                 .title(request.title())
                 .imgURL(forImageResponseDTO.postImg())
-                .subject(request.subject())
-                .goal(request.goal())
-                .outline(request.outline())
-                .targetStudent(request.targetStudent())
-                .level(request.level())
-                .contactMethod(request.contactMethod())
+                .startDateTime(request.startDateTime())
+                .endDateTime(request.endDateTime())
                 .fee(request.fee())
                 .feeRange(feeRange)
-                .startDate(request.startDate())
-                .endDate(request.endDate())
+                .deadline(request.deadline())
                 .province(request.province())
                 .city(request.city())
                 .address(request.address())
                 .minP(request.minP())
                 .maxP(request.maxP())
-                .content(request.content())
+                .numsOfParticipant(0)
+                .numsOfHeart(0)
                 .status(request.status())
                 .createdDate(request.createdDate())
-                .deadline(request.deadline())
-                .numsOfHeart(0)
-                .numsOfParticipant(0)
-                .user(user)
+                .content(request.content())
                 .build();
         postJPARepository.save(post);
 
@@ -116,27 +110,19 @@ public class PostService {
         post.update(
                 request.title(),
                 forImageResponseDTO.postImg(),
-                request.subject(),
-                request.goal(),
-                request.outline(),
-                request.targetStudent(),
-                request.level(),
-                request.contactMethod(),
+                request.startDateTime(),
+                request.endDateTime(),
                 request.fee(),
                 feeRange,
-                request.startDate(),
-                request.endDate(),
+                request.deadline(),
                 request.province(),
                 request.city(),
                 request.address(),
                 request.minP(),
                 request.maxP(),
-                request.content(),
                 request.status(),
-                request.createdDate(),
-                request.deadline()
+                request.content()
         );
-
         return forImageResponseDTO;
     }
 
@@ -199,11 +185,16 @@ public class PostService {
     }
 
     private User getUserByName(String userName) {
-        User user = userRepository.findByUsername(userName);
-        if (user == null) {
+        Optional<User> user = userRepository.findByName(userName);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
         } else {
-            return user;
+
+
+            System.out.println(user.get().getId()+user.get().getName());
+            log.info(user.get().getId()+user.get().getName());
+            return user.get();
+
         }
     }
 

@@ -8,9 +8,10 @@ import com.culture.BAEUNDAY.utils.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/gpt")
@@ -23,11 +24,5 @@ public class GptController {
     public ResponseEntity<?> get(@RequestBody @Valid GptRequest.GptRequestDto requestDto) {
         PageResponse<?, GptResponse.GptResponseDto> response = gptService.run(requestDto);
         return ResponseEntity.ok(ApiUtils.success(response));
-    }
-    @PostMapping("/test")
-    public ResponseEntity<?> test(@RequestBody @Valid GptRequest.GptRequestDto requestDto) throws IOException {
-        gptService.zero_few(requestDto);
-
-        return ResponseEntity.ok(ApiUtils.success("gpt-test"));
     }
 }

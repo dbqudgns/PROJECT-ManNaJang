@@ -2,11 +2,8 @@ package com.culture.BAEUNDAY.domain.user;
 
 import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
 import com.culture.BAEUNDAY.domain.post.Post;
-import com.culture.BAEUNDAY.domain.post.PostJPARepository;
-import com.culture.BAEUNDAY.domain.review.DTO.response.ReviewResponseDTO;
-import com.culture.BAEUNDAY.domain.review.Review;
-import com.culture.BAEUNDAY.domain.user.DTO.response.*;
 import com.culture.BAEUNDAY.domain.user.DTO.request.RegisterRequestDTO;
+import com.culture.BAEUNDAY.domain.user.DTO.response.*;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
 import com.culture.BAEUNDAY.utils.CursorRequest;
 import com.culture.BAEUNDAY.utils.CursorResponse;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -182,13 +180,13 @@ public class UserService {
     }
 
     public User findUserByUsernameOrThrow(String username) {
-        User user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByName(username);
 
-        if (user == null) {
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
         }
 
-        return user;
+        return user.get();
     }
 
     private PageResponse<Long, List<PostResponse.PostDTO>> createCursorPageResponse(

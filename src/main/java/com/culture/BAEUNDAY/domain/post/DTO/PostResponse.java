@@ -56,15 +56,9 @@ public class PostResponse {
             UserDTO user,
             String title,
             String imgURL,
-            String subject,
-            String goal,
-            String outline,
-            String targetStudent,
-            String level,
-            String contactMethod,
             Integer fee,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime,
             String province,
             String city,
             String address,
@@ -73,9 +67,8 @@ public class PostResponse {
             Integer participants,
             Integer hearts,
             String content,
-            String status,
             LocalDateTime createdDate,
-            LocalDateTime dateTime
+            LocalDateTime deadline
 
     ){
         public FindByIdDTO(
@@ -89,15 +82,9 @@ public class PostResponse {
                     new UserDTO(user),
                     post.getTitle(),
                     post.getImgURL(),
-                    post.getSubject(),
-                    post.getGoal(),
-                    post.getOutline(),
-                    post.getTargetStudent(),
-                    post.getLevel(),
-                    post.getContactMethod(),
                     post.getFee(),
-                    post.getStartDate(),
-                    post.getEndDate(),
+                    post.getStartDateTime(),
+                    post.getEndDateTime(),
                     post.getProvince().toString(),
                     post.getCity(),
                     post.getAddress(),
@@ -106,7 +93,6 @@ public class PostResponse {
                     post.getNumsOfParticipant(),
                     post.getNumsOfHeart(),
                     post.getContent(),
-                    post.getStatus().toString(),
                     post.getCreatedDate(),
                     post.getDeadline()
             );

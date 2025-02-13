@@ -96,7 +96,7 @@ public class ReserveService {
                             .fee(post.getFee())
                             .status(reserve.getStatus())
                             .myStatus(reserve.getMyStatus())
-                            .startDate(post.getStartDate())
+                            .startDate(post.getStartDateTime())
                             .reservationDate(reserve.getReservationDate())
                             .build()
             );
