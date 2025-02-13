@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.AccessDeniedException;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/api/comments")
 @RequiredArgsConstructor
 @Tag(name = "댓글 api", description = "댓글 CRUD")
 public class CommentController {

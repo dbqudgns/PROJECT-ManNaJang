@@ -50,9 +50,9 @@ public class SecurityConfig {
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll()
-                .requestMatchers("/", "/login", "/logout", "/user/login", "/user/logout", "/user/check-name", "/user/check-username", "/user/register", "/reissue").permitAll()
+                .requestMatchers("/", "/login", "/logout", "/api/user/login", "/api/user/logout", "/api/user/check-name", "/api/user/check-username", "/api/user/register", "/api/reissue").permitAll()
 
-                .requestMatchers("/user/profile/**", "/heart/**", "/review/**", "/posts/**", "/comments/**", "/reply/**", "/gpt/**", "/posts/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                .requestMatchers("/api/user/profile/**", "/api/heart/**", "/api/review/**", "/api/posts/**", "/api/comments/**", "/api/reply/**", "/api/gpt/**", "/api/posts/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
 
                 .anyRequest().authenticated());
 

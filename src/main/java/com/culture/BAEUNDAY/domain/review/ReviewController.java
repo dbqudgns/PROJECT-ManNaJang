@@ -18,7 +18,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/api/review")
 @RequiredArgsConstructor
 @Tag(name = "별점 api", description = "별점 CRUD")
 public class ReviewController {

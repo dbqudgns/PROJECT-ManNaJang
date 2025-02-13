@@ -11,7 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/hearts")
+@RequestMapping("/api/hearts")
 @RequiredArgsConstructor
 @Tag(name = "찜 api", description = "찜 관련 기능")
 public class HeartRestController {

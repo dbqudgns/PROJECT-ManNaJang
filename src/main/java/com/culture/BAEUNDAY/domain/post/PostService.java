@@ -189,9 +189,12 @@ public class PostService {
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
         } else {
+
+
             System.out.println(user.get().getId()+user.get().getName());
             log.info(user.get().getId()+user.get().getName());
             return user.get();
+
         }
     }
 
