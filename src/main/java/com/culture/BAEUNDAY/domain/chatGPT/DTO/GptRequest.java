@@ -36,7 +36,6 @@ public class GptRequest {
             Integer minP,
             @NotNull
             Integer maxP,
-            @NotBlank
             String etc
 
     ){
