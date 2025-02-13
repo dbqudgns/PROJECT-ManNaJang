@@ -4,6 +4,8 @@ import com.culture.BAEUNDAY.domain.heart.Heart;
 import com.culture.BAEUNDAY.domain.heart.HeartJPARepository;
 import com.culture.BAEUNDAY.domain.post.DTO.PostRequest;
 import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
+import com.culture.BAEUNDAY.domain.reserve.Reserve;
+import com.culture.BAEUNDAY.domain.reserve.ReserveJPARepository;
 import com.culture.BAEUNDAY.domain.user.User;
 import com.culture.BAEUNDAY.domain.user.UserRepository;
 import com.culture.BAEUNDAY.utils.CursorRequest;
@@ -34,6 +36,7 @@ public class PostService {
     private final PostImageService postImageService;
     private final HeartJPARepository heartJPARepository;
     private final PostCustomRepositoryImpl postCustomRepository;
+    private final ReserveJPARepository reserveJPARepository;
 
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
@@ -68,30 +71,24 @@ public class PostService {
         ForImageResponseDTO forImageResponseDTO = postImageService.uploadImg(image);
 
         Post post = Post.builder()
+                .user(user)
                 .title(request.title())
                 .imgURL(forImageResponseDTO.postImg())
-                .subject(request.subject())
-                .goal(request.goal())
-                .outline(request.outline())
-                .targetStudent(request.targetStudent())
-                .level(request.level())
-                .contactMethod(request.contactMethod())
+                .startDateTime(request.startDateTime())
+                .endDateTime(request.endDateTime())
                 .fee(request.fee())
                 .feeRange(feeRange)
-                .startDate(request.startDate())
-                .endDate(request.endDate())
+                .deadline(request.deadline())
                 .province(request.province())
                 .city(request.city())
                 .address(request.address())
                 .minP(request.minP())
                 .maxP(request.maxP())
-                .content(request.content())
+                .numsOfParticipant(0)
+                .numsOfHeart(0)
                 .status(request.status())
                 .createdDate(request.createdDate())
-                .deadline(request.deadline())
-                .numsOfHeart(0)
-                .numsOfParticipant(0)
-                .user(user)
+                .content(request.content())
                 .build();
         postJPARepository.save(post);
 
@@ -113,27 +110,19 @@ public class PostService {
         post.update(
                 request.title(),
                 forImageResponseDTO.postImg(),
-                request.subject(),
-                request.goal(),
-                request.outline(),
-                request.targetStudent(),
-                request.level(),
-                request.contactMethod(),
+                request.startDateTime(),
+                request.endDateTime(),
                 request.fee(),
                 feeRange,
-                request.startDate(),
-                request.endDate(),
+                request.deadline(),
                 request.province(),
                 request.city(),
                 request.address(),
                 request.minP(),
                 request.maxP(),
-                request.content(),
                 request.status(),
-                request.createdDate(),
-                request.deadline()
+                request.content()
         );
-
         return forImageResponseDTO;
     }
 
@@ -156,10 +145,13 @@ public class PostService {
         User writer = getUserByName(post.getUser().getName());
         boolean isMine = false;
         boolean isHearted = false;
+        boolean isReserved = false;
+        Optional<Reserve> reserve = reserveJPARepository.findByUserAndPost(visitor, post);
+        if ( reserve.isPresent()) { isReserved = true; }
         if (visitor.equals(writer)) {isMine = true;} // 본인 글 체크
         Optional<Heart> heart = heartJPARepository.findByUserAndPost(visitor, post);
         if(heart.isPresent()) { isHearted = true ;}
-        PostResponse.FindByIdDTO findByIdDTO = new PostResponse.FindByIdDTO(post, writer, isMine, isHearted);
+        PostResponse.FindByIdDTO findByIdDTO = new PostResponse.FindByIdDTO(post, writer, isMine, isHearted, isReserved);
         return new PageResponse<>( null, findByIdDTO);
     }
 
@@ -193,13 +185,13 @@ public class PostService {
     }
 
     private User getUserByName(String userName) {
-        User user = userRepository.findByUsername(userName);
-        if (user == null) {
+        Optional<User> user = userRepository.findByName(userName);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
         } else {
-            System.out.println(user.getId()+user.getName());
-            log.info(user.getId()+user.getName());
-            return user;
+            System.out.println(user.get().getId()+user.get().getName());
+            log.info(user.get().getId()+user.get().getName());
+            return user.get();
         }
     }
 
