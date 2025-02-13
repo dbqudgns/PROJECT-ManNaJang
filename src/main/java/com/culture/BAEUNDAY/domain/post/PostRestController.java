@@ -30,13 +30,16 @@ public class PostRestController {
     public ResponseEntity<?> findAllPost(@RequestParam(value = "sort", defaultValue = "id") String sort,
                                          @RequestParam(value = "status", required = false) Status status,
                                          @RequestParam(value = "feeRange", required = false) FeeRange feeRange,
-                                         @RequestParam(value = "province", required = false) Province province,
+                                         @RequestParam(value = "province", required = false, defaultValue = "전국") Province province,
                                          @RequestParam(value = "city", required = false)  String city,
                                          @RequestParam(value = "cursor", required = false) String cursor,
                                          @RequestParam(value = "cursorId", required = false) Long cursorId ) {
+        // 문자열 provinceStr을 Province enum으로 변환
+
         PageResponse<?, PostResponse.FindAllDTO> responseDTO = postService.findAll(sort,status, feeRange, province, city, cursor,cursorId);
         return ResponseEntity.ok(ApiUtils.success(responseDTO));
     }
+
 
     @Operation(summary = "특정 프로그램 조회")
     @GetMapping("/{postId}")
