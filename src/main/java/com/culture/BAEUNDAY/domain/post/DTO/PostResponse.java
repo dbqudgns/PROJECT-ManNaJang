@@ -52,6 +52,7 @@ public class PostResponse {
             Long id,
             boolean isMyPost,
             boolean isHearted,
+            boolean isReserved,
             UserDTO user,
             String title,
             String imgURL,
@@ -78,12 +79,13 @@ public class PostResponse {
 
     ){
         public FindByIdDTO(
-                Post post, User user, boolean isMyPost, boolean isHearted
+                Post post, User user, boolean isMyPost, boolean isHearted, boolean isReserved
         ){
             this(
                     post.getId(),
                     isMyPost,
                     isHearted,
+                    isReserved,
                     new UserDTO(user),
                     post.getTitle(),
                     post.getImgURL(),

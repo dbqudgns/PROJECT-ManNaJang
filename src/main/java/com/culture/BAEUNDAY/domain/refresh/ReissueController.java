@@ -17,7 +17,7 @@ public class ReissueController {
 
     private final ReissueService reissueService;
 
-    @PostMapping("/reissue")
+    @PostMapping("/api/reissue")
     @Operation(summary = "Access 토큰 재발급 및 Refresh 토큰 Rotate")
     public ResponseEntity<Map<String, Object>> reissue(HttpServletRequest request, HttpServletResponse response) {
 

@@ -4,6 +4,8 @@ import com.culture.BAEUNDAY.domain.heart.Heart;
 import com.culture.BAEUNDAY.domain.heart.HeartJPARepository;
 import com.culture.BAEUNDAY.domain.post.DTO.PostRequest;
 import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
+import com.culture.BAEUNDAY.domain.reserve.Reserve;
+import com.culture.BAEUNDAY.domain.reserve.ReserveJPARepository;
 import com.culture.BAEUNDAY.domain.user.User;
 import com.culture.BAEUNDAY.domain.user.UserRepository;
 import com.culture.BAEUNDAY.utils.CursorRequest;
@@ -34,6 +36,7 @@ public class PostService {
     private final PostImageService postImageService;
     private final HeartJPARepository heartJPARepository;
     private final PostCustomRepositoryImpl postCustomRepository;
+    private final ReserveJPARepository reserveJPARepository;
 
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
@@ -156,10 +159,13 @@ public class PostService {
         User writer = getUserByName(post.getUser().getName());
         boolean isMine = false;
         boolean isHearted = false;
+        boolean isReserved = false;
+        Optional<Reserve> reserve = reserveJPARepository.findByUserAndPost(visitor, post);
+        if ( reserve.isPresent()) { isReserved = true; }
         if (visitor.equals(writer)) {isMine = true;} // 본인 글 체크
         Optional<Heart> heart = heartJPARepository.findByUserAndPost(visitor, post);
         if(heart.isPresent()) { isHearted = true ;}
-        PostResponse.FindByIdDTO findByIdDTO = new PostResponse.FindByIdDTO(post, writer, isMine, isHearted);
+        PostResponse.FindByIdDTO findByIdDTO = new PostResponse.FindByIdDTO(post, writer, isMine, isHearted, isReserved);
         return new PageResponse<>( null, findByIdDTO);
     }
 
@@ -197,8 +203,6 @@ public class PostService {
         if (user == null) {
             throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
         } else {
-            System.out.println(user.getId()+user.getName());
-            log.info(user.getId()+user.getName());
             return user;
         }
     }
