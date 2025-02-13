@@ -25,9 +25,9 @@ public class PostRestController {
 
     private final PostService postService;
 
-    @Operation(summary = "모든 프로그램 조회 ( 홈 ) sort = id/heart/recent , status = ING/AVAILBLE/END , fee = FREE/UNDER_3/BETWEEN3_5/BETWEEN5_10/OVER_10 ")
+    @Operation(summary = "모든 프로그램 조회 ( 홈 ) sort = recent/heart/deadline , status = ING/AVAILBLE/END , fee = FREE/UNDER_3/BETWEEN3_5/BETWEEN5_10/OVER_10 ")
     @GetMapping
-    public ResponseEntity<?> findAllPost(@RequestParam(value = "sort", defaultValue = "id") String sort,
+    public ResponseEntity<?> findAllPost(@RequestParam(value = "sort", defaultValue = "recent") String sort,
                                          @RequestParam(value = "status", required = false) Status status,
                                          @RequestParam(value = "feeRange", required = false) FeeRange feeRange,
                                          @RequestParam(value = "province", required = false) Province province,

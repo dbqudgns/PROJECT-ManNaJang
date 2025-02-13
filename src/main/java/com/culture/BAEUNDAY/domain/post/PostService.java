@@ -12,6 +12,7 @@ import com.culture.BAEUNDAY.utils.PageResponse;
 import com.culture.BAEUNDAY.utils.s3.ForImageResponseDTO;
 import com.culture.BAEUNDAY.utils.s3.PostImageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import java.util.function.Function;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class PostService {
 
     private final PostJPARepository postJPARepository;
@@ -39,7 +41,7 @@ public class PostService {
     public PageResponse<? extends Comparable<?> , PostResponse.FindAllDTO> findAll(String sort, Status status, FeeRange feeRange, Province province, String city, String cursor, Long cursorId) {
         List<Post> posts;
         switch( sort ) {
-            case "id" -> {
+            case "recent" -> {
                 CursorRequest<Long> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Long.class, cursorId );
                 posts = postCustomRepository.findAllById(page.cursor, page.cursorID, status, feeRange, province, city, page.request);
                 return createCursorPageResponse(Post::getId, posts);
@@ -49,7 +51,7 @@ public class PostService {
                 posts = postCustomRepository.findAllByHeart(page.cursor, page.cursorID, status, feeRange, province, city, page.request);
                 return createCursorPageResponse(Post::getNumsOfHeart, posts);
             }
-            case "recent" -> {
+            case "deadline" -> {
                 CursorRequest<LocalDateTime> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, LocalDateTime.class, cursorId );
                 posts = postCustomRepository.findAllByDateTime(page.cursor, page.cursorID, status, feeRange, province, city, page.request);
                 return createCursorPageResponse(Post::getDeadline, posts);
@@ -195,6 +197,8 @@ public class PostService {
         if (user == null) {
             throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
         } else {
+            System.out.println(user.getId()+user.getName());
+            log.info(user.getId()+user.getName());
             return user;
         }
     }
