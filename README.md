@@ -1,5 +1,3 @@
-![header](https://capsule-render.vercel.app/api?type=transparent&text=만나장&fontColor=FFFFFF)
-
 ![image](https://github.com/user-attachments/assets/379a3840-eafc-4a02-acb8-42ca524c03ea)
 
 ### ✍프로젝트 소개
