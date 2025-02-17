@@ -28,45 +28,45 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; //
 
     @Column(nullable = false)
-    private String title;
+    private String title; //
 
     @Column
-    private String imgURL;
+    private String imgURL; //
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDateTime ;
+    private LocalDateTime startDateTime; //
 
     @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDateTime;
+    private LocalDateTime endDateTime; //
 
     @Column(nullable = false)
-    private Integer fee;
+    private Integer fee; //
 
     @Column(name = "fee_range", nullable = false)
     @Enumerated(EnumType.STRING)
     private FeeRange feeRange;
 
     @Column(nullable = false)
-    private LocalDateTime deadline;
+    private LocalDateTime deadline; //
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Province province;
+    private Province province; //
 
     @Column(nullable = false)
-    private String city;
+    private String city; //
 
     @Column(nullable = false)
-    private String address;
+    private String address; //
 
     @Column(nullable = false)
-    private int minP;
+    private int minP; //
 
     @Column(nullable = false)
-    private int maxP;
+    private int maxP; //
 
     @Column(name = "nums_of_participant", nullable = false)
     private Integer numsOfParticipant;
@@ -76,13 +76,13 @@ public class Post {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status; //
 
     @Column(name = "created_date", nullable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate; //
 
     @Column(nullable = false)
-    private String content;
+    private String content; //
 
     @Builder.Default
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)

@@ -5,7 +5,7 @@ import com.culture.BAEUNDAY.domain.user.DTO.request.*;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
 import com.culture.BAEUNDAY.utils.ApiUtils;
 import com.culture.BAEUNDAY.utils.PageResponse;
-import com.culture.BAEUNDAY.utils.s3.UserImageService;
+import com.culture.BAEUNDAY.s3.UserImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;

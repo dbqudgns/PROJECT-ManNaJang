@@ -1,5 +1,6 @@
 package com.culture.BAEUNDAY.domain.review;
 
+import com.culture.BAEUNDAY.domain.post.Post;
 import com.culture.BAEUNDAY.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -25,7 +26,11 @@ public class Review {
     @JoinColumn(name = "reviewer_id", nullable = false)
     private User reviewer; //리뷰를 작성한 사람
 
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
+
+    @Column
     private String field;
 
     private Integer star;
@@ -34,9 +39,10 @@ public class Review {
     private LocalDateTime createdDate;
 
     @Builder
-    public Review(User reviewee, User reviewer, String field, Integer star, LocalDateTime createdDate) {
+    public Review(User reviewee, User reviewer, Post post, String field, Integer star, LocalDateTime createdDate) {
         this.reviewee = reviewee;
         this.reviewer = reviewer;
+        this.post = post;
         this.field = field;
         this.star = star;
         this.createdDate = createdDate;

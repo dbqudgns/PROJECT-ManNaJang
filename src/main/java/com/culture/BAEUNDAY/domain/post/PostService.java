@@ -11,8 +11,8 @@ import com.culture.BAEUNDAY.domain.user.UserRepository;
 import com.culture.BAEUNDAY.utils.CursorRequest;
 import com.culture.BAEUNDAY.utils.CursorResponse;
 import com.culture.BAEUNDAY.utils.PageResponse;
-import com.culture.BAEUNDAY.utils.s3.ForImageResponseDTO;
-import com.culture.BAEUNDAY.utils.s3.PostImageService;
+import com.culture.BAEUNDAY.s3.ForImageResponseDTO;
+import com.culture.BAEUNDAY.s3.PostImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -142,7 +142,7 @@ public class PostService {
     public PageResponse<?, PostResponse.FindByIdDTO> findById(Long postId, String user) {
         Post post = getPostById(postId);
         User visitor = getUserByName(user);
-        User writer = getUserByName(post.getUser().getName());
+        User writer = getUserByName(post.getUser().getUsername());
         boolean isMine = false;
         boolean isHearted = false;
         boolean isReserved = false;
@@ -189,10 +189,6 @@ public class PostService {
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
         } else {
-
-
-            System.out.println(user.get().getId()+user.get().getName());
-            log.info(user.get().getId()+user.get().getName());
             return user.get();
 
         }

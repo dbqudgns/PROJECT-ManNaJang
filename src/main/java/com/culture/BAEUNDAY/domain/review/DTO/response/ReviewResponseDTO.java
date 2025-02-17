@@ -1,5 +1,6 @@
 package com.culture.BAEUNDAY.domain.review.DTO.response;
 
+import com.culture.BAEUNDAY.domain.review.Review;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

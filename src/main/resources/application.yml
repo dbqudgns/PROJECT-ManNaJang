@@ -2,14 +2,14 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://localhost:3306/baeunday_app?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: root
+    password:
 
-   # driver-class-name: com.mysql.cj.jdbc.Driver
-   # url: jdbc:mysql://localhost:3306/baeunday_app?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-   # username: root
-   # password: dbqudgns24
+  #driver-class-name: com.mysql.cj.jdbc.Driver
+  #url: ${MYSQL_URL}
+  #username: ${MYSQL_USERNAME}
+  #password: ${MYSQL_PASSWORD}
 
   jwt:
     secret: ${JWT_KEY}

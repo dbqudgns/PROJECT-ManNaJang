@@ -46,12 +46,14 @@ public class ReserveService {
             if (host.equals(participant)){
                 throw new IllegalArgumentException("본인이 작성한 프로그램은 신청할 수 없습니다.");
             }
+
             Reserve newReserve = Reserve.builder()
                     .user(participant)
                     .post(post)
                     .reservationDate(requestDto.reservationDate())
                     .status(Status.PAYMENT)
                     .myStatus(MyStatus.NOT_OPEN).build();
+
             reserveJPARepository.save(newReserve);
             post.addParticipant(newReserve);
             return ("신청 완료") ;
