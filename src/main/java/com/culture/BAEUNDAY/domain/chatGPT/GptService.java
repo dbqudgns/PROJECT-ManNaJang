@@ -75,7 +75,7 @@ public class GptService {
             content = client.chat().completions().create(params)
                     .choices().stream()
                     .map(choice -> choice.message().content().orElse(""))
-                    .collect(Collectors.joining("\n"));
+                    .collect(Collectors.joining("  "));
 
         }catch (OpenAIException e){
             throw new OpenAIException(e.getMessage());

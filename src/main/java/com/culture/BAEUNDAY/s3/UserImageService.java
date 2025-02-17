@@ -1,4 +1,4 @@
-package com.culture.BAEUNDAY.utils.s3;
+package com.culture.BAEUNDAY.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;

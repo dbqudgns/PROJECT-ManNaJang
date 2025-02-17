@@ -48,4 +48,8 @@ public class Reserve {
         this.myStatus = myStatus;
     }
 
+    public void changeMyStatus(){
+        this.myStatus = MyStatus.REVIEWED;
+    }
+
 }

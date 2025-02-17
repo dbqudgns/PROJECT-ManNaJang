@@ -2,9 +2,12 @@ package com.culture.BAEUNDAY.domain.review;
 
 import com.culture.BAEUNDAY.domain.post.Post;
 import com.culture.BAEUNDAY.domain.post.PostJPARepository;
+import com.culture.BAEUNDAY.domain.reserve.Reserve;
+import com.culture.BAEUNDAY.domain.reserve.ReserveJPARepository;
 import com.culture.BAEUNDAY.domain.review.DTO.request.ReviewRequestDTO;
 import com.culture.BAEUNDAY.domain.review.DTO.request.updateReviewRequestDTO;
 import com.culture.BAEUNDAY.domain.review.DTO.response.ReviewResponseDTO;
+import com.culture.BAEUNDAY.domain.review.DTO.response.updateReviewResponseDTO;
 import com.culture.BAEUNDAY.domain.user.User;
 import com.culture.BAEUNDAY.domain.user.UserRepository;
 import com.culture.BAEUNDAY.domain.user.UserService;
@@ -29,6 +32,7 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final PostJPARepository postJPARepository;
+    private final ReserveJPARepository reserveJPARepository;
 
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
@@ -66,14 +70,25 @@ public class ReviewService {
 
         User reviewee = post.getUser();
 
+        if (user.equals(reviewee)) {
+            throw new IllegalArgumentException("게시글 작성자는 리뷰를 등록할 수 없습니다.");
+        }
+
+      /* Optional<Reserve> reserve = reserveJPARepository.findByUserAndPost(user, post);
+        if (reserve.isEmpty()){
+            throw new IllegalArgumentException("신청한 내역이 없습니다.");
+        }*/
+
         Review review = Review.builder()
-                .reviewer(user)
                 .reviewee(reviewee)
+                .reviewer(user)
+                .post(post)
                 .field(reviewRequest.field())
                 .star(reviewRequest.star())
                 .createdDate(reviewRequest.createdDate())
                 .build();
 
+        //reserve.get().changeMyStatus();
         reviewRepository.save(review);
 
         return ReviewResponseDTO.builder()
@@ -88,7 +103,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public ReviewResponseDTO updateReview(Long reviewId, updateReviewRequestDTO updateReviewRequest, CustomUserDetails customUserDetails) throws AccessDeniedException {
+    public updateReviewResponseDTO updateReview(Long reviewId, updateReviewRequestDTO updateReviewRequest, CustomUserDetails customUserDetails) throws AccessDeniedException {
 
         User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
@@ -101,12 +116,10 @@ public class ReviewService {
 
         updateReview.updateReview(updateReviewRequest.field(), updateReviewRequest.star());
 
-        return ReviewResponseDTO.builder()
-                .review_id(updateReview.getId())
+        return updateReviewResponseDTO.builder()
                 .name(user.getName())
                 .field(updateReview.getField())
                 .star(updateReview.getStar())
-                .createdDate(updateReview.getCreatedDate())
                 .build();
 
     }

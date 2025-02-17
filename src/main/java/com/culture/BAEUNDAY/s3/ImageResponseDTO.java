@@ -1,4 +1,4 @@
-package com.culture.BAEUNDAY.utils.s3;
+package com.culture.BAEUNDAY.s3;
 
 import lombok.Builder;
 

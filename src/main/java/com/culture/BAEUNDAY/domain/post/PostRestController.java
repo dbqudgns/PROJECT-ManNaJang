@@ -6,7 +6,7 @@ import com.culture.BAEUNDAY.domain.post.DTO.PostResponse;
 import com.culture.BAEUNDAY.jwt.Custom.CustomUserDetails;
 import com.culture.BAEUNDAY.utils.ApiUtils;
 import com.culture.BAEUNDAY.utils.PageResponse;
-import com.culture.BAEUNDAY.utils.s3.ForImageResponseDTO;
+import com.culture.BAEUNDAY.s3.ForImageResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

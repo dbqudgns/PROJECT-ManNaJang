@@ -1,4 +1,4 @@
-package com.culture.BAEUNDAY.utils.s3;
+package com.culture.BAEUNDAY.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
@@ -135,7 +135,6 @@ public class PostImageService {
 
             // 객체가 존재하는지 확인
             if (!amazonS3.doesObjectExist(bucket, key)) {
-                System.out.println("===실행");
                 throw new IllegalArgumentException("S3 저장소에서 삭제할 이미지가 존재하지 않습니다.");
             }
 
