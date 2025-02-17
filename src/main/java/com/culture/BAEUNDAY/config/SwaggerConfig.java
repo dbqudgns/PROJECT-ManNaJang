@@ -13,6 +13,7 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
+
         //JWT 보안 설정 및 보안 컴포넌트 추가 및 JWT 설정
         String jwt = "JWT";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
