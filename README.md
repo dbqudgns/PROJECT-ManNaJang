@@ -6,15 +6,19 @@
 ####  서비스 플랫폼
 만남이 줄어들면 지역사회는 고립되고, 세대 간 단절은 가속화됩니다. 
 AI 강의 기획서를 통해 누구나 강사가 되고, 지역에서 배움과 성장을 이루는 경험을 느껴보세요 !
+
+### 📅프로젝트 진행 기간 
+2025/01/15 ~ 2025/02/14
+
+### 💊프로젝트 리팩토링 기간
+2025/02/15 ~ 추후 업데이트 
+
 ### 👩‍💻팀원 소개
 
 |  | 개발 범위 | 
 | --- | --- | 
 | dbqudgns:유병훈 | JWT, User, Comment, Reply, Review, 배포   |
 | pigglehyun:이승현 | ChatGPT, Post, Heart, Reserve, 페이지네이션  |
-
-### ✨배포 링크
-
 
 ### 💻개발 환경
 
@@ -62,7 +66,8 @@ openai-java api 활용
 ![mannajang (1)](https://github.com/user-attachments/assets/465664fd-b0b2-4b11-bff1-fa5773fe4685)
 
 ### 📑ERD
-![image](https://github.com/user-attachments/assets/62c3195e-e9c7-4d63-a41f-7fbccb6e22ea)
+![image](https://github.com/user-attachments/assets/9e80c4ba-3322-440e-9677-34145f4c94bc)
+
 
 ### ✏️링크모음
 [FIGMA](https://www.figma.com/design/PnhVOCGVtxDUGJYPNV8AFW/%EB%A3%A8%ED%8A%B8%EC%9E%84%ED%8C%A9%ED%8A%B8_11%ED%8C%80?node-id=0-1&p=f&t=PAuMYOapFMEhf6Ms-0)   
