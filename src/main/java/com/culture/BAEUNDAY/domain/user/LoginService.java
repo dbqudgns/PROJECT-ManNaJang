@@ -36,7 +36,7 @@ public class LoginService {
             String role = authentication.getAuthorities().iterator().next().getAuthority();
 
             Integer expireS = 24 * 60 * 60;
-            String access = jwtUtil.createJWT("access", username, role, expireS * 1000L); //Access 토큰 : 10분으로 설정
+            String access = jwtUtil.createJWT("access", username, role, 60 * 10 * 1000L); //Access 토큰 : 10분으로 설정
 
            // Integer expireS = 24 * 60 * 60;
             String refresh = jwtUtil.createJWT("refresh", username, role, expireS * 1000L); //Refresh 토큰 : 24시간으로 설정
