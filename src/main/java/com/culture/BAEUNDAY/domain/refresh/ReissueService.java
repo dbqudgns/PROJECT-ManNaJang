@@ -68,7 +68,7 @@ public class ReissueService {
 
         //새로운 Access, Refresh 토큰 발급 (Refresh Rotate)
         Integer expiredS = 60 * 60 * 24;
-        String newAccess = jwtUtil.createJWT("access", username, role, expiredS * 1000L);
+        String newAccess = jwtUtil.createJWT("access", username, role, 60 * 10 * 1000L);
         //Integer expiredS = 60 * 60 * 24;
         String newRefresh = jwtUtil.createJWT("refresh", username, role, expiredS * 1000L);
 
