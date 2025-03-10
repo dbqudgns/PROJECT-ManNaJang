@@ -20,7 +20,7 @@ https://dqg-developer.tistory.com/11
 
 |  | 개발 범위 | 
 | --- | --- | 
-| dbqudgns:유병훈 | JWT, User, Comment, Reply, Review, 배포   |
+| dbqudgns:유병훈 | JWT, User, Comment, Reply, Review, 배포(Aws, Docker), RDS, S3   |
 | pigglehyun:이승현 | ChatGPT, Post, Heart, Reserve, 페이지네이션  |
 
 ### 💻개발 환경
