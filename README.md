@@ -30,6 +30,7 @@ https://dqg-developer.tistory.com/11
   <img src="https://img.shields.io/badge/Java-6DB33F?style=flat-square&logoColor=white"/>
   <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/>
   <img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=flat-square&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logoColor=white"/>
 </p>
 
 #### API
@@ -41,7 +42,6 @@ https://dqg-developer.tistory.com/11
 <p>
  <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=flat-square&logoColor=white"/>
   <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=springboot&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logoColor=white"/>
   <img src="https://img.shields.io/badge/Amazon S3-569A31?style=flat-square&logo=mysql&logoColor=white"/>
 </p>
 
