@@ -6,6 +6,7 @@ import com.culture.BAEUNDAY.domain.reserve.Reserve;
 import com.culture.BAEUNDAY.domain.reserve.ReserveJPARepository;
 import com.culture.BAEUNDAY.domain.review.DTO.request.ReviewRequestDTO;
 import com.culture.BAEUNDAY.domain.review.DTO.request.updateReviewRequestDTO;
+import com.culture.BAEUNDAY.domain.review.DTO.response.ReviewResponse;
 import com.culture.BAEUNDAY.domain.review.DTO.response.ReviewResponseDTO;
 import com.culture.BAEUNDAY.domain.review.DTO.response.updateReviewResponseDTO;
 import com.culture.BAEUNDAY.domain.user.User;
@@ -18,6 +19,8 @@ import com.culture.BAEUNDAY.utils.PageResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -32,22 +35,29 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final PostJPARepository postJPARepository;
-    private final ReserveJPARepository reserveJPARepository;
 
     private static final int PAGE_SIZE_PLUS_ONE = 5 + 1;
 
     public PageResponse<Long,  List<ReviewResponseDTO>> getMyReviews(CustomUserDetails customUserDetails, String cursor) {
 
         User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
+        Pageable pageRequest = PageRequest.of(0, PAGE_SIZE_PLUS_ONE);
 
-        CursorRequest<Long> page = new CursorRequest<>(PAGE_SIZE_PLUS_ONE, cursor, Long.class, 0L) ;
-        List<Review> reviews = reviewRepository.findByRevieweeIdWithCursor(user.getId(), page.cursor, page.request);
+        List<Review> reviews;
+
+        if (cursor == null || cursor.isEmpty()) {
+            // 1. 첫 페이지용 쿼리 호출
+            reviews = reviewRepository.findFirstPageByRevieweeId(user.getId(), pageRequest);
+        } else {
+            // 2. 다음 페이지용 쿼리 호출
+            Long cursorId = Long.parseLong(cursor);
+            reviews = reviewRepository.findNextPageByRevieweeIdWithCursor(user.getId(), cursorId, pageRequest);
+        }
 
         return createCursorPageResponse(Review::getId, reviews);
-
     }
 
-    public  PageResponse<Long,  List<ReviewResponseDTO>> getOtherReviews(Long otherId, CustomUserDetails customUserDetails,String cursor) {
+    public PageResponse<Long, List<ReviewResponseDTO>> getOtherReviews(Long otherId, CustomUserDetails customUserDetails,String cursor) {
 
         User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
 
@@ -63,21 +73,18 @@ public class ReviewService {
     @Transactional
     public ReviewResponseDTO registerReview(Long postId, ReviewRequestDTO reviewRequest, CustomUserDetails customUserDetails) {
 
+        // 로그인한 사용자
         User user = userService.findUserByUsernameOrThrow(customUserDetails.getUsername());
+
 
         Post post = postJPARepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시글을 찾을 수 없습니다."));
 
-        User reviewee = post.getUser();
+        User reviewee  = post.getUser(); // 리뷰 받는 사람
 
         if (user.equals(reviewee)) {
             throw new IllegalArgumentException("게시글 작성자는 리뷰를 등록할 수 없습니다.");
         }
-
-      /* Optional<Reserve> reserve = reserveJPARepository.findByUserAndPost(user, post);
-        if (reserve.isEmpty()){
-            throw new IllegalArgumentException("신청한 내역이 없습니다.");
-        }*/
 
         Review review = Review.builder()
                 .reviewee(reviewee)
@@ -174,5 +181,30 @@ public class ReviewService {
         Long nextCursor =  lastReview.getId();
         return new PageResponse<>(new CursorResponse<>(hasNext, size, nextCursor, nextCursor), reviewList);
 
+    }
+
+    // DTO 리스트를 직접 처리하도록 수정한 메서드
+    private PageResponse<Long, List<ReviewResponse>> createDtoCursorPageResponse(
+            Function<ReviewResponse, Long> cursorExtractor,
+            List<ReviewResponse> reviews
+    ) {
+        if (reviews.isEmpty()) {
+            return new PageResponse<>(new CursorResponse<>(false, 0, null, null), null);
+        }
+
+        int size = reviews.size();
+        boolean hasNext = false;
+        if (size == PAGE_SIZE_PLUS_ONE) {
+            reviews.remove(size - 1);
+            size -= 1;
+            hasNext = true;
+        }
+
+        // 엔티티를 DTO로 변환하는 반복문이 완전히 사라짐
+
+        ReviewResponse lastReview = reviews.get(size - 1);
+        Long nextCursor = cursorExtractor.apply(lastReview); // cursorExtractor 사용
+
+        return new PageResponse<>(new CursorResponse<>(hasNext, size, nextCursor, nextCursor), reviews);
     }
 }

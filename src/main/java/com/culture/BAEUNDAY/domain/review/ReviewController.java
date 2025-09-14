@@ -63,8 +63,4 @@ public class ReviewController {
                                           @AuthenticationPrincipal CustomUserDetails customUserDetails) throws AccessDeniedException {
         return ResponseEntity.ok(reviewService.deleteReview(id, customUserDetails));
     }
-
-
-
-
 }
