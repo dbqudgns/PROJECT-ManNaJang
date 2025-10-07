@@ -48,7 +48,7 @@ https://dqg-developer.tistory.com/11
 #### Collaboration
 <p>
  <img src="https://img.shields.io/badge/git-F05032?style=flat-square&logoColor=white"/>
- <img src="https://img.shields.io/badge/githubL-1817171?style=flat-square&logo=springboot&logoColor=white"/>
+ <img src="https://img.shields.io/badge/github-1817171?style=flat-square&logo=springboot&logoColor=white"/>
  <img src="https://img.shields.io/badge/notion-000000?style=flat-square&logo=springboot&logoColor=white"/>
  <img src="https://img.shields.io/badge/discord-5865F2?style=flat-square&logo=springboot&logoColor=white"/>
 </p>
@@ -66,7 +66,7 @@ openai-java api 활용
    
 
 ### 🗂️ 시스템 구성도
-![mannajang (1)](https://github.com/user-attachments/assets/465664fd-b0b2-4b11-bff1-fa5773fe4685)
+<img width="1054" height="662" alt="image" src="https://github.com/user-attachments/assets/bc3be943-6abb-4e83-8fbb-dd7afdb71c99" />
 
 ### 📑ERD
 ![image](https://github.com/user-attachments/assets/9e80c4ba-3322-440e-9677-34145f4c94bc)
